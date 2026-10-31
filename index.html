@@ -2,7 +2,7 @@
 <html lang="id"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FORMAT SOAL</title>
+<title>EVALUASI PKK</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
   :root {
@@ -19,6 +19,10 @@
   * {
     -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;
     user-select: none; -webkit-touch-callout: none; box-sizing: border-box;
+  }
+  input, select, textarea, #dashboardGuru, #dashboardGuru * {
+    -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text;
+    user-select: text;
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -249,7 +253,7 @@
   .print-preview-page .kunci-jawaban h3 { text-align: left; font-weight: bold; }
 </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
 <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Mode Gelap">🌙</button>
 
@@ -264,20 +268,21 @@
 <div id="watermarkOverlay"></div>
 
 <div class="container fade-in">
-  <h1 id="judulUtama">FORMAT SOAL</h1>
-  <p class="subtitle" id="subJudul">MATERI BAB</p>
+  <h1 id="judulUtama">EVALUASI PKK</h1>
+  <p class="subtitle" id="subJudul">MATERI BAB 1</p>
 
   <div id="menuAwal" class="menu-awal" style="display: block;">
     <h2 id="menuAwalTitle">Selamat Datang</h2>
     <p id="menuAwalSubtitle">Silakan pilih peran Anda untuk melanjutkan</p>
     <div class="menu-buttons">
       <button class="menu-btn menu-btn-siswa" onclick="bukaFormSiswa()">📝 Mulai Ujian (Siswa)</button>
+      <button class="menu-btn menu-btn-warning" id="btnResetMenuAwal" onclick="resetSoalMenuAwal()" style="display:none;">🔄 Reset Ujian / Latihan</button>
       <button class="menu-btn menu-btn-guru" onclick="bukaLoginGuru()">🔑 Login Guru (Kelola Ujian)</button>
     </div>
   </div>
 
   <div id="identityForm" style="display:none;" class="fade-in">
-    <div class="info-box" id="infoWaktu">⏰ Waktu: <strong>40 menit</strong> | Soal: <strong>Semua</strong></div>
+    <div class="info-box" id="infoWaktu">⏰ Waktu: <strong>35 menit</strong> | Soal: <strong>Semua</strong></div>
     <div class="warning-box">🚨 <strong>PERINGATAN:</strong> Ujian berjalan dalam mode FULLSCREEN. Dilarang screenshot, pindah tab, atau keluar layar. <strong><span id="maxPelanggaranInfo">6</span> pelanggaran = auto-submit.</strong><br>📸 Layar akan ditandai dengan <strong>watermark nama Anda</strong> sebagai bukti digital.</div>
     <div class="form-group"><label>Nama Lengkap:</label><input type="text" id="nama" placeholder="Masukkan nama lengkap"></div>
     <div class="form-group"><label>Nomor Absen:</label><input type="text" id="nomor" placeholder="Masukkan nomor absen"></div>
@@ -291,7 +296,7 @@
 
   <div id="dashboardGuru" class="dashboard-guru fade-in" style="display: none;">
     <div class="dashboard-header">
-      <div><h2>🎓 Dashboard Guru <span class="version-badge" id="versionBadge">v5.12</span></h2><p>Kelola pengaturan ujian di sini</p></div>
+      <div><h2>🎓 Dashboard Guru <span class="version-badge" id="versionBadge">v5.14</span></h2><p>Kelola pengaturan ujian di sini</p></div>
       <button class="btn btn-danger" onclick="keluarDashboard()" style="padding:8px 15px; font-size:13px;">🚪 Keluar</button>
     </div>
 
@@ -305,8 +310,8 @@
         <button class="btn btn-secondary" onclick="resetJudul()" style="padding:8px 15px; font-size:13px;">🔄 Reset Default</button>
       </div>
       <div class="preview-judul">
-        <h3 id="previewJudulUtama">FORMAT SOAL</h3>
-        <p id="previewSubJudul">MATERI BAB</p>
+        <h3 id="previewJudulUtama">EVALUASI PKK</h3>
+        <p id="previewSubJudul">MATERI BAB 1</p>
         <p style="margin-top:8px; font-size:12px; color:var(--accent-blue);">🔑 Token: <strong id="previewToken">2026</strong></p>
       </div>
       <div id="statusJudul"></div>
@@ -356,8 +361,8 @@
         <button class="btn btn-danger" onclick="resetSoalDefault()" style="padding:8px 15px; font-size:13px;">🔄 Reset Default</button>
       </div>
       <div id="statusImport"></div>
-      <div id="previewSoal"><div class="preview-box"><strong>Preview 1 soal pertama:</strong><br><div class="preview-item"><strong>1.</strong> Teknologi informasi dan komunikasi dapat diartikan sebagai s... <em>[Jawaban: A]</em></div></div></div>
-      <p class="info-small">📌 Total soal dalam bank: <strong id="jumlahSoalSaatIni">1</strong></p>
+      <div id="previewSoal"><div class="preview-box"><strong>Preview 5 soal pertama:</strong><br><div class="preview-item"><strong>1.</strong> Siapakah yang disebut sebagai wirausahawan menurut teks mate... <em>[Jawaban: A]</em></div><div class="preview-item"><strong>2.</strong> Berikut ini yang merupakan contoh wirausaha dalam pembuatan ... <em>[Jawaban: B]</em></div><div class="preview-item"><strong>3.</strong> Berdasarkan Tabel 1.1, faktor yang memengaruhi semangat kerj... <em>[Jawaban: C]</em></div><div class="preview-item"><strong>4.</strong> Salah satu faktor penyebab keberhasilan seorang wirausaha ad... <em>[Jawaban: D]</em></div><div class="preview-item"><strong>5.</strong> Faktor-faktor penyebab kegagalan seorang wirausaha di antara... <em>[Jawaban: E]</em></div><div class="preview-item" style="color:var(--text-secondary);">... dan 45 soal lainnya</div></div></div>
+      <p class="info-small">📌 Total soal dalam bank: <strong id="jumlahSoalSaatIni">50</strong></p>
     </div>
 
     <div class="panel">
@@ -490,7 +495,7 @@
         <button class="btn btn-excel" onclick="exportToExcel()" style="padding:10px 20px; font-size:14px;">📊 Export Excel (.xlsx)</button>
         <button class="btn btn-warning" onclick="resetPengaturanCetak()" style="padding:10px 20px; font-size:14px;">🔄 Reset Default</button>
       </div>
-      <div id="previewCetakArea"><div class="print-preview-container"><div class="print-preview-page" style="font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1; padding: 1.5cm 1.5cm 1.5cm 1.5cm; width: 21.5cm; min-height: 9.9cm;"><div style="text-align:center; margin-bottom:15px;"><h2 style="margin:0 0 5px 0; font-size:14pt; text-transform:uppercase;">PAI</h2><h3 style="margin:0 0 10px 0; font-size:13pt; font-weight:normal;">MATERI BAB 1</h3><div style="font-size:12pt;">Hari/Tanggal: Rabu, 28 Oktober 2026</div></div><div style="margin-bottom:15px; font-size:12pt;"><div style="margin-bottom:5px; display:flex;"><span style="width:100px;">Nama</span><span style="width:10px;">:</span><span style="flex:1; border-bottom:1px solid #000;"></span></div><div style="margin-bottom:5px; display:flex;"><span style="width:100px;">Kelas</span><span style="width:10px;">:</span><span style="flex:1; border-bottom:1px solid #000;"></span></div><div style="margin-bottom:5px; display:flex;"><span style="width:100px;">Nomor Absen</span><span style="width:10px;">:</span><span style="flex:1; border-bottom:1px solid #000;"></span></div></div><div style="text-align:center; font-weight:bold; margin:15px 0; font-size:13pt; text-transform:uppercase; text-decoration:underline;">Soal Pilihan Ganda</div><div class="soal-item"><p style="text-align: justify;"><strong>1.</strong> Apa istilah dalam Al-Qur'an untuk "berlomba-lomba dalam kebaikan" seperti yang diperintahkan dalam Q.S. Al-Ma'idah/5: 48?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Fastabiqul khairat</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Ta'awun</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Tawazun</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Amar makruf</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Nahi munkar</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>2.</strong> Menurut Kamus Besar Bahasa Indonesia (KBBI), apa arti dari kata "kompetisi"?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Kerjasama</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Persaingan</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Perdamaian</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Persatuan</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Toleransi</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>3.</strong> Kitab suci yang diturunkan kepada Nabi Muhammad Saw. sebagai pembenar kitab-kitab sebelumnya adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Taurat</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Zabur</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Al-Qur'an</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Injil</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Suhuf</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>4.</strong> Salah satu perilaku yang mencerminkan kandungan Q.S. Al-Ma'idah/5: 48 dalam kehidupan sehari-hari adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Mengucapkan hamdalah saat makan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Membuang sampah di sungai</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Bergaul tanpa batasan syariat</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mengucapkan basmalah saat memulai aktivitas</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Menunda-nunda waktu salat</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>5.</strong> Siapakah perawi hadis yang menyebutkan tentang perintah segera beramal sebelum datangnya fitnah seperti malam yang gelap gulita?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Abdullah bin Umar</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Anas bin Malik</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Umar bin Khattab</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Aisyah R.A.</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Abu Hurairah R.A.</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>6.</strong> Apa makna awal dari kata "syir'ah" atau "syari'ah" secara bahasa menurut materi?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Air yang banyak atau jalan menuju sumber air</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Jalan yang luas</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Agama yang bersifat umum</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Hukum yang tidak bisa diubah</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Petunjuk yang samar</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>7.</strong> Dalam Q.S. Al-Ma'idah/5: 48, Allah Swt. menyatakan bahwa jika Dia menghendaki, niscaya Dia akan menjadikan manusia...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Terpecah belah</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Satu umat saja</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Selalu berselisih</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Tidak memiliki syariat</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Bebas dari ujian</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>8.</strong> Menurut Dr. Abdullah bin Muhammad Alu Syaikh dalam kitab Lubab at-Tafsir, maksud "fastabiqul khairat" adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Menunda amal sampai tua</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti syariat umat terdahulu</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Perintah segera mengamalkan kebaikan dan mengikuti syariat yang menasakh sebelumnya</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Berlomba mengumpulkan harta dunia</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mengubah isi kitab suci sesuai hawa nafsu</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>9.</strong> Salah satu kandungan Q.S. Al-Ma'idah/5: 48 adalah bahwa Al-Qur'an adalah kitab suci yang...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Bisa diubah oleh manusia</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Hanya berlaku untuk umat Nabi Musa</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Tidak memiliki petunjuk</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Tidak akan berubah meskipun satu huruf</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mengandung syariat yang sama persis dengan Taurat</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>10.</strong> Apa tujuan utama dari kompetisi dalam kebaikan menurut ajaran Islam?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Mendapatkan pujian dari orang lain</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mengalahkan pesaing dengan cara curang</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Menunjukkan kekayaan kepada sesama</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mendapatkan kekuasaan politik</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mencari rida Allah Swt.</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>11.</strong> Dalam kajian ilmu tajwid Q.S. Al-Ma'idah/5: 48, hukum bacaan "Mad Jaiz Munfasil" terjadi karena...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Mad Tabi'i diikuti Hamzah bukan dalam satu kata</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mad Tabi'i diikuti Hamzah dalam satu kata</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Nun mati bertemu huruf ba</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mim mati bertemu huruf ba</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Huruf mad bertemu huruf hidup</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>12.</strong> Kata "Minhaj" dalam Q.S. Al-Ma'idah/5: 48 memiliki makna...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Air yang sedikit</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Jalan yang luas</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Agama yang universal</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Hukum yang keras</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Umat yang satu</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>13.</strong> Mengapa syariat setiap umat bisa berbeda-beda menurut penjelasan dalam materi?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Karena Allah Swt. tidak konsisten</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Karena kitab-kitab sebelumnya hilang</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Sesuai dengan kondisi dan perkembangan masyarakat pada zamannya</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Karena para nabi saling berselisih</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Karena manusia tidak mampu menjalankan satu hukum</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>14.</strong> Perhatikan perilaku: "Salat tepat waktu dan menjauhi pergaulan kurang baik." Perilaku ini mencerminkan poin...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Menggunakan akal untuk berfilsafat</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mengubah syariat sesuai zaman</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Menjual agama dengan kenikmatan dunia</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Selalu menaati peraturan-Nya dan menjauhi larangan-Nya</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba dalam hal duniawi</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>15.</strong> Dalam hadis riwayat Muslim, orang yang menjual agamanya dengan kenikmatan dunia diibaratkan mengalami perubahan iman seperti...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Siang menjadi malam</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Air menjadi es</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Pohon yang tumbang</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Matahari yang terbit</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Pagi mukmin, sore kafir (atau sebaliknya)</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>16.</strong> Menurut Hamka dalam Tafsir Al-Azhar, kata "ilaika" (kepadamu) dalam Q.S. Al-Ma'idah/5: 48 ditujukan kepada Nabi Muhammad Saw. sebagai...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Penutup para nabi dan rasul yang menyempurnakan risalah sebelumnya</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Pembawa syariat yang sama persis dengan Nabi Musa</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Pemimpin politik umat Islam di Madinah</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Satu-satunya nabi yang menerima kitab suci</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Penjaga harta benda umat</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>17.</strong> Apa perbedaan mendasar antara "din" (agama) dan "syariat" berdasarkan makna kosakata?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Din bisa dibatalkan, syariat tidak bisa dibatalkan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Din bersifat umum dan mencakup semua umat, sedangkan syariat adalah tuntunan untuk umat/nabi tertentu yang bisa diganti</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Din khusus untuk Nabi Muhammad, syariat untuk semua nabi</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Din adalah hukum duniawi, syariat adalah hukum ukhrawi</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Tidak ada perbedaan, keduanya bermakna sama</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>18.</strong> Salah satu sikap yang mencerminkan kandungan hadis tentang kompetisi dalam kebaikan adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Menunda amal saleh sampai usia tua</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mengisolasi diri dari masyarakat</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Selalu waspada terhadap kemungkinan terjadinya fitnah dengan melakukan amal saleh</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti hawa nafsu dalam beragama</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Berselisih paham dengan umat lain</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>19.</strong> Hukum bacaan "Mad Wajib Muttasil" terjadi karena...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Mad Tabi'i bertemu huruf mati karena waqaf</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mad Tabi'i diikuti Hamzah dalam satu kata</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Mad Tabi'i diikuti Hamzah bukan dalam satu kata</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Nun mati bertemu huruf izhar</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mim mati bertemu huruf mim</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>20.</strong> Apa yang dimaksud dengan "amal saleh" menurut istilah dalam konteks kompetisi kebaikan?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang hanya menguntungkan diri sendiri</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang dilakukan untuk mendapatkan pujian</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang merusak lingkungan demi kemajuan</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang mendatangkan maslahat bagi diri sendiri dan orang lain serta tidak merusak</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang mengikuti hawa nafsu</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>21.</strong> Asbabun nuzul Q.S. Al-Ma'idah/5: 48 mengingatkan umat Islam agar tidak bersikap seperti umat Nabi Musa A.S. yang...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Tidak mengamalkan dan menegakkan apa yang terkandung dalam kitab yang diturunkan kepada mereka</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Selalu berlomba-lomba dalam kebaikan</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Menjaga keaslian kitab suci dengan sempurna</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Selalu mengikuti syariat yang baru</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Tidak pernah berselisih paham</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>22.</strong> Dalam Q.S. Al-Ma'idah/5: 48, Allah Swt. menguji manusia terhadap karunia yang telah diberikan. Jawaban yang seharusnya diberikan manusia adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Bersikap sombong</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba untuk berbuat kebajikan</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Mengabaikan nikmat tersebut</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mengklaim nikmat itu hasil usaha sendiri semata</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Menyalahkan orang lain atas kekurangan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>23.</strong> Manakah di bawah ini yang merupakan contoh perilaku "peduli terhadap sekitar" yang mencerminkan Q.S. Al-Ma'idah/5: 48?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Membuang sampah sembarangan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Menjaga kebersihan lingkungan</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti pergaulan yang kurang baik</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Meninggalkan salat tepat waktu</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Bersikap acuh tak acuh terhadap tetangga</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>24.</strong> Apa tujuan dari Allah Swt. menjadikan syariat yang berbeda-beda untuk tiap-tiap umat?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Agar umat saling bermusuhan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Agar manusia bingung memilih agama</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Agar kitab suci mudah diubah</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Untuk menguji sejauh mana mereka dapat mengimplementasikan syariat-Nya yang tertuang dalam kitab samawi masing-masing</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Agar syariat lama tetap dipertahankan selamanya</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>25.</strong> Dalam hadis riwayat Muslim, fitnah diibaratkan seperti...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Angin yang berhembus pelan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Air yang mengalir tenang</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Cahaya matahari di siang hari</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Hujan yang menyegarkan</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Malam yang gelap gulita</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>26.</strong> Salah satu syarat berkompetisi dalam kebaikan agar diterima oleh Allah Swt. adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Memiliki niat yang ikhlas karena Allah Swt.</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Melakukan dengan cara-cara yang curang</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Bertujuan untuk mengalahkan lawan secara fisik</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mencari keuntungan duniawi semata</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti hawa nafsu</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>27.</strong> Apa yang akan diberitahukan Allah Swt. kepada hamba-Nya ketika mereka kembali kepada-Nya di akhirat kelak?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Jumlah harta yang mereka kumpulkan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Apa saja yang dahulu pernah mereka perselisihkan saat menjalani kehidupan di dunia</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Nama-nama pesaing mereka di dunia</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Rahasia yang mereka simpan dari sesama manusia</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Cara-cara untuk kembali ke dunia</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>28.</strong> Dalam konteks Q.S. Al-Ma'idah/5: 48, apa fungsi Al-Qur'an terhadap kitab-kitab yang diturunkan sebelumnya?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Menghapus dan memusnahkan fisiknya</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Sebagai pembenar dan penjaga (acuan kebenaran) terhadapnya</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Sebagai kitab yang isinya bertentangan total</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Sebagai kitab yang hanya berlaku untuk bangsa Arab</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Sebagai kitab yang sulit dipahami</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>29.</strong> Jika seseorang beramal saleh dengan niat agar dipuji oleh orang lain, maka ia telah melanggar prinsip...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Amar makruf nahi munkar</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Istikamah dalam mengerjakan kebaikan dan niat karena Allah Swt.</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Menggunakan akal sehat</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba dalam kebaikan</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Toleransi antarumat beragama</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>30.</strong> Berdasarkan makna kosakata, mengapa seseorang yang bertahan pada syariat lama padahal keadaan sudah berubah akan tersesat?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Karena syariat lama lebih unggul</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Karena perubahan dilarang dalam agama</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Karena semua syariat sama saja</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Karena manusia tidak memerlukan tuntunan</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Karena setiap terjadi perubahan kondisi, Allah Swt. akan mengubah syariat, dan yang tidak mengikuti minhaj akan tersesat</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>31.</strong> Analisis kasus: Seorang siswa membantu teman yang kesulitan memahami pelajaran tanpa mengharapkan imbalan secara konsisten. Perilaku ini paling tepat mencerminkan poin...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba dalam kebaikan merupakan bentuk ungkapan rasa syukur atas limpahan anugerah Allah Swt.</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Perintah untuk mengubah syariat sesuai keinginan sendiri</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Anjuran untuk berselisih paham demi kebenaran</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Kewajiban untuk mengisolasi diri dari lingkungan</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Larangan untuk menggunakan akal dalam belajar</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>32.</strong> Dalam Tafsir Al-Azhar, Hamka menyimpulkan bahwa agama yang disampaikan oleh para nabi memiliki satu pokok dan satu tujuan. Apa tujuan tersebut?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Kekuasaan politik</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Tauhid</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Kekayaan materi</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Dominasi budaya</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Persatuan suku</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>33.</strong> Pernyataan yang sesuai dengan isi dan kandungan Q.S. Al-Ma'idah/5: 48 adalah: (1) Al-Qur'an membenarkan kitab sebelumnya, (2) Syariat setiap umat berbeda sesuai kondisi zamannya, (3) Manusia tidak perlu menggunakan akal, (4) Al-Qur'an tidak akan berubah meskipun satu huruf.</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">(1), (2), dan (3)</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">(1), (3), dan (4)</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">(1), (2), dan (4)</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">(2), (3), dan (4)</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">(3) dan (4) saja</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>34.</strong> Seorang dai menekankan bahwa dalam berdakwah harus melalui "minhaj" yang jelas sebelum mencapai "syariat". Berdasarkan makna kosakata, hal ini mengandung isyarat bahwa...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Minhaj adalah tujuan akhir yang tidak bisa diubah</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Syariat tidak memerlukan jalan untuk mencapainya</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Minhaj hanya berlaku untuk umat terdahulu</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Ada jalan menuju syariat, dan siapa yang mengikuti minhaj akan sampai kepada syariat</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Syariat dan minhaj adalah dua konsep yang saling meniadakan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>35.</strong> Dalam hadis riwayat Muslim, seseorang bisa menjual agamanya dengan barang kenikmatan dunia. Sikap paling tepat untuk menghindari hal tersebut adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Menghindari semua bentuk harta benda</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Menarik diri dari kehidupan bermasyarakat</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Menunda amal saleh hingga usia senja</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti semua keinginan hawa nafsu</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Selalu waspada terhadap fitnah dan memanfaatkan waktu untuk berzikir serta menjaga keimanan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>36.</strong> Mengapa Q.S. Al-Ma'idah/5: 48 menekankan untuk "memutuskan perkara mereka menurut aturan yang diturunkan Allah"?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Karena aturan Allah adalah kebenaran mutlak yang mencegah penyimpangan dan pengubahan oleh orang yang mencari keuntungan diri</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Karena manusia tidak memiliki kemampuan berpikir sama sekali</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Karena aturan Allah selalu sama dengan aturan buatan manusia</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Karena keputusan manusia selalu lebih adil daripada keputusan Allah</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Karena aturan Allah hanya berlaku untuk urusan ibadah mahdah saja</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>37.</strong> Analisis kasus: Dua kelompok berselisih mengenai detail ibadah sunah dan saling memaksakan kehendak dengan keras. Berdasarkan Q.S. Al-Ma'idah/5: 48, sikap yang seharusnya diambil adalah...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Saling menjatuhkan untuk membuktikan kebenaran</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba dalam berbuat kebaikan dan menyadari bahwa hanya Allah yang akan menjelaskan apa yang mereka perselisihkan di akhirat</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Meninggalkan ibadah sama sekali agar tidak berselisih</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mengubah isi Al-Qur'an agar sesuai dengan kelompoknya</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti hawa nafsu kelompok masing-masing</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>38.</strong> Dalam konteks "fastabiqul khairat", apa yang dimaksud dengan "amal saleh" yang tidak merusak?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Amal yang hanya menguntungkan satu pihak</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Amal yang dilakukan dengan terpaksa</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang mendatangkan maslahat bagi diri sendiri dan orang lain tanpa menimbulkan kerusakan</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang melanggar aturan negara</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Perbuatan yang mengutamakan kepentingan golongan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>39.</strong> Perhatikan hukum tajwid berikut: "Mad Tabi'i bertemu dengan huruf mati karena waqaf". Hukum bacaan ini disebut...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Mad Jaiz Munfasil</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mad Wajib Muttasil</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Ikhfa' Syafawi</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Mad 'Arid Lissukun</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Izhar Qamariyyah</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>40.</strong> Apa hubungan antara "berlomba-lomba dalam kebaikan" dengan "rasa syukur" menurut penjelasan tafsir dalam materi?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Tidak ada hubungan sama sekali</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba dalam kebaikan adalah bentuk kompetisi duniawi</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Rasa syukur hanya diucapkan dengan lisan tanpa perbuatan</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba dalam kebaikan adalah kewajiban yang memberatkan, bukan syukur</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Berlomba-lomba berbuat kebajikan merupakan salah satu bentuk ungkapan rasa syukur kepada Allah Swt. atas semua rahmat yang telah dianugerahkan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>41.</strong> Jika seseorang berargumen bahwa syariat Islam sudah tidak relevan dengan zaman modern, maka berdasarkan materi, argumen tersebut keliru karena...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Syariat bisa mengalami perubahan sesuai kondisi, tetapi dasar dan landasan agama (tauhid/keimanan) tidak berubah, dan Al-Qur'an sebagai penjaga kebenaran tetap berlaku</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Syariat Islam tidak pernah mengalami perubahan sejak zaman Nabi Adam</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Zaman modern tidak memerlukan aturan agama</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Semua syariat umat terdahulu harus dihidupkan kembali</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Akal manusia lebih tinggi daripada wahyu Allah</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>42.</strong> Dalam hadis tentang fitnah, disebutkan "Di pagi hari, seorang laki-laki dalam keadaan mukmin, lalu kafir di sore harinya." Ini mengindikasikan bahwa...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Iman seseorang tidak mungkin berubah</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Iman manusia bisa mengalami pasang-surut dan sangat rentan terhadap fitnah jika tidak segera beramal saleh</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Waktu pagi adalah waktu yang paling buruk untuk beribadah</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Sore hari adalah waktu di mana semua orang menjadi kafir</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Laki-laki lebih mudah kafir daripada perempuan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>43.</strong> Manakah kombinasi perilaku yang paling tepat mencerminkan pemahaman Q.S. Al-Ma'idah/5: 48 dan hadis tentang kompetisi kebaikan secara simultan?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Rajin salat tetapi suka bergosip tentang keburukan orang lain</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Berlomba mengumpulkan harta untuk pamer, lalu bersedekah sedikit</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Mengucapkan basmalah sebelum beraktivitas, istikamah dalam kebaikan, dan memanfaatkan waktu untuk amal saleh sebelum datang fitnah</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Menunda amal baik sampai ada waktu luang yang panjang</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti hawa nafsu dengan alasan kebebasan berekspresi</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>44.</strong> Mengapa Allah Swt. tidak menjadikan manusia sebagai satu umat saja, padahal Dia mampu melakukannya?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Karena Allah Swt. tidak memiliki kemampuan tersebut</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Karena manusia menolak untuk disatukan</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Karena satu umat akan lebih mudah diatur oleh penguasa</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Karena Allah Swt. hendak menguji manusia tentang karunia dan nikmat yang telah diberikan-Nya</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Karena perbedaan adalah kesalahan yang harus dihilangkan</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>45.</strong> Dalam konteks Q.S. Al-Ma'idah/5: 48, apa yang dimaksud dengan "kebenaran yang telah datang kepadamu"?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Kebenaran yang dibuat oleh para filsuf</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Kebenaran yang sesuai dengan keinginan mayoritas</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Kebenaran yang bisa diubah sesuai kebutuhan</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Kebenaran yang hanya bersifat relatif</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Kebenaran yang dibawa oleh Al-Qur'an sebagai pembenar kitab-kitab sebelumnya</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>46.</strong> Analisis kasus: Seorang pelajar menegur temannya yang menyontek dengan baik dan tetap membantu temannya belajar setelahnya. Tindakan ini mencerminkan...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Peduli terhadap sekitar dan istikamah dalam kebaikan tanpa meninggalkan kebenaran</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Ikut menyontek agar teman merasa senang</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Melaporkan teman kepada pihak berwajib tanpa menegur terlebih dahulu</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Membiarkan saja karena bukan urusannya</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Bersaing untuk mendapatkan nilai tertinggi dengan cara curang</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>47.</strong> Apa perbedaan utama antara kompetisi dalam kebaikan (fastabiqul khairat) dengan kompetisi duniawi yang tercela?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Kompetisi kebaikan tidak memerlukan usaha keras</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Kompetisi kebaikan dilakukan dengan niat ikhlas, cara yang benar, dan bertujuan mencari rida Allah, sedangkan kompetisi duniawi yang tercela sering kali mengikuti hawa nafsu dan menghalalkan segala cara</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Kompetisi kebaikan hanya boleh dilakukan di masjid</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Kompetisi duniawi selalu dilarang dalam semua kondisi</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Tidak ada perbedaan, keduanya sama saja</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>48.</strong> Berdasarkan penjelasan Dr. Abdullah bin Muhammad Alu Syaikh, "fastabiqul khairat" juga berarti mengikuti syariat yang Allah jadikan sebagai penasakh. Apa maksud 'penasakh' di sini?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Syariat yang memperkuat syariat lama tanpa perubahan</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Syariat yang menghapus atau menggantikan syariat-syariat sebelumnya</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Syariat yang hanya berlaku untuk umat Yahudi dan Nasrani</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Syariat yang tidak memiliki dasar hukum</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Syariat yang bersifat sementara</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>49.</strong> Dalam memahami dinamika syariat dan minhaj, pernyataan manakah yang paling tepat menggambarkan konsekuensi logis dari pemahaman tersebut?</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Minhaj tidak ada hubungannya dengan syariat</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Syariat tidak pernah berubah dalam kondisi apa pun</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Din (agama) bisa dibatalkan oleh syariat yang baru</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Siapa yang mengikuti minhaj akan sampai kepada syariat, dan yang sampai kepada syariat berarti telah sampai kepada agama</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Perubahan kondisi masyarakat tidak mempengaruhi penerapan syariat</span></div></div></div><div class="soal-item"><p style="text-align: justify;"><strong>50.</strong> Kesimpulan akhir dari pembelajaran Q.S. Al-Ma'idah/5: 48 dan hadis tentang kompetisi dalam kebaikan adalah bahwa umat Islam harus...</p><div class="opsi"><div class="opsi-item"><span class="opsi-huruf">A.</span><span class="opsi-teks" style="text-align: justify;">Mengisolasi diri dari umat lain</span></div><div class="opsi-item"><span class="opsi-huruf">B.</span><span class="opsi-teks" style="text-align: justify;">Mengubah isi Al-Qur'an agar sesuai dengan tantangan zaman</span></div><div class="opsi-item"><span class="opsi-huruf">C.</span><span class="opsi-teks" style="text-align: justify;">Mengikuti hawa nafsu dalam mengambil keputusan</span></div><div class="opsi-item"><span class="opsi-huruf">D.</span><span class="opsi-teks" style="text-align: justify;">Menunda amal saleh hingga usia tua</span></div><div class="opsi-item"><span class="opsi-huruf">E.</span><span class="opsi-teks" style="text-align: justify;">Senantiasa berlomba-lomba dalam kebaikan, memegang teguh Al-Qur'an sebagai acuan, dan menyadari bahwa semua akan kembali dan dipertanggungjawabkan di hadapan Allah Swt.</span></div></div></div><div style="margin-top:20px; border-top:2px solid #000; padding-top:10px;"><h3 style="text-align:center; margin:0 0 10px 0; font-weight:bold; text-transform:uppercase; text-decoration:underline;">Kunci Jawaban</h3><table style="width:100%; border-collapse:collapse; margin-top:10px;"><tbody><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 1. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 2. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 3. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 4. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 5. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 6. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 7. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 8. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;"> 9. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">10. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">11. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">12. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">13. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">14. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">15. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">16. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">17. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">18. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">19. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">20. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">21. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">22. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">23. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">24. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">25. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">26. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">27. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">28. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">29. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">30. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">31. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">32. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">33. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">34. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">35. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">36. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">37. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">38. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">39. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">40. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">41. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">42. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">43. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">44. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">45. E</td></tr><tr><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">46. A</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">47. B</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">48. C</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">49. D</td><td style="padding:3px 8px; border:1px solid #ccc; font-size:12pt; text-align:center;">50. E</td></tr></tbody></table></div></div><div style="text-align:center; margin-top:10px; font-size:12px; color:var(--text-secondary);"> Preview halaman 1 | Total 50 soal | F4 (21.5×33 cm)</div></div></div>
+      <div id="previewCetakArea"></div>
       <div class="alert-info" style="margin-top:10px;">
         💡 <strong>Tips:</strong>
         <ul class="tips-list">
@@ -529,9 +534,26 @@
     lock.waitLock(10000); // Tunggu antrean maksimal 10 detik agar tidak ada bentrok antar HP
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
+
+    // Inisialisasi header kolom jika sheet masih kosong
     if (sheet.getLastRow() == 0) {
-      sheet.appendRow(["Timestamp", "Nama", "Nomor Absen", "Kelas", "Nilai", "Benar", "Total Soal", "Pelanggaran", "Auto Submit", "Waktu Selesai"]);
+      sheet.appendRow(["Timestamp", "Nama", "Nomor Absen", "Kelas", "Nilai", "Benar", "Total Soal", "Pelanggaran", "Auto Submit", "Waktu Selesai", "ID Submission"]);
     }
+
+    // Pencegahan Dobel Data (Idempotensi): Cek apakah submissionId sudah pernah tercatat
+    var submissionId = String(data.submissionId || "");
+    if (submissionId) {
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        var existingIds = sheet.getRange(2, 11, lastRow - 1, 1).getValues();
+        for (var i = 0; i < existingIds.length; i++) {
+          if (String(existingIds[i][0]) === submissionId) {
+            return ContentService.createTextOutput(JSON.stringify({result: "already_exists", message: "Data sudah ada"})).setMimeType(ContentService.MimeType.JSON);
+          }
+        }
+      }
+    }
+
     sheet.appendRow([
       data.waktuSelesai || new Date(),
       data.nama || "",
@@ -542,7 +564,8 @@
       data.totalSoal || 0,
       data.pelanggaran || 0,
       data.autoSubmit ? "Ya" : "Tidak",
-      data.waktuSelesai || ""
+      data.waktuSelesai || "",
+      submissionId
     ]);
     SpreadsheetApp.flush();
     return ContentService.createTextOutput(JSON.stringify({result: "success"})).setMimeType(ContentService.MimeType.JSON);
@@ -571,7 +594,59 @@
     </div>
 
     <div class="panel">
-      <h3>🗑️ 10. Reset Data Siswa &amp; Data Ter-Embed</h3>
+      <h3>🐙 10. Integrasi GitHub Auto-Sync (Update Langsung di Web GitHub)</h3>
+      <p style="font-size:13px; margin:0 0 10px 0; color:var(--text-secondary);">Atur token dan repositori GitHub agar setiap perubahan data/pengaturan langsung ter-commit dan ter-update di website GitHub Pages tanpa harus download HTML.</p>
+      <div class="form-group">
+        <label>Personal Access Token (PAT) GitHub:</label>
+        <div class="password-wrapper">
+          <input type="password" id="inputGithubToken" class="input-judul" placeholder="ghp_... atau github_pat_...">
+          <button type="button" class="password-toggle" onclick="togglePwd('inputGithubToken')">👁️</button>
+        </div>
+      </div>
+      <div class="panel-row" style="margin-bottom:10px;">
+        <div class="form-group" style="flex:1; min-width:150px; margin-bottom:0;">
+          <label>Owner / Username GitHub:</label>
+          <input type="text" id="inputGithubOwner" placeholder="Contoh: username-anda">
+        </div>
+        <div class="form-group" style="flex:1; min-width:150px; margin-bottom:0;">
+          <label>Nama Repository:</label>
+          <input type="text" id="inputGithubRepo" placeholder="Contoh: evaluasi-pkk">
+        </div>
+      </div>
+      <div class="panel-row" style="margin-bottom:10px;">
+        <div class="form-group" style="flex:1; min-width:150px; margin-bottom:0;">
+          <label>Path File HTML di Repo:</label>
+          <input type="text" id="inputGithubPath" placeholder="default: index.html">
+        </div>
+        <div class="form-group" style="flex:1; min-width:150px; margin-bottom:0;">
+          <label>Branch Target:</label>
+          <input type="text" id="inputGithubBranch" placeholder="default: main">
+        </div>
+      </div>
+      <div class="panel-row" style="margin-bottom:12px;">
+        <label style="margin:0; font-weight:bold;">Otomatis Auto-Sync / Push ke GitHub saat Ada Perubahan Data:</label>
+        <label class="toggle-switch"><input type="checkbox" id="toggleAutoPushGithub" onchange="simpanAutoPushGithubToggle()"><span class="slider"></span></label>
+        <span id="statusAutoPushGithub" class="status-badge status-off">NONAKTIF</span>
+      </div>
+      <div class="panel-row" style="gap:8px;">
+        <button class="btn btn-success" onclick="simpanKonfigurasiGithub()" style="padding:8px 15px; font-size:13px;">💾 Simpan Konfigurasi GitHub</button>
+        <button class="btn btn-primary" onclick="syncKeGitHubManually()" style="padding:8px 15px; font-size:13px; background:var(--accent-blue);">⚡ Sync Langsung ke GitHub</button>
+        <button class="btn btn-warning" onclick="tesKoneksiGithub()" style="padding:8px 15px; font-size:13px;">🧪 Tes Koneksi GitHub</button>
+      </div>
+      <div id="statusGithubSync" style="margin-top:10px;"></div>
+      <div class="alert-info" style="margin-top:10px;">
+        💡 <strong>Panduan Membuat Personal Access Token (PAT) GitHub:</strong>
+        <ol class="step-list">
+          <li>Login ke akun GitHub Anda, lalu buka <strong>Settings &gt; Developer Settings &gt; Personal access tokens &gt; Tokens (classic)</strong> (atau Fine-grained tokens).</li>
+          <li>Klik <strong>Generate new token</strong>.</li>
+          <li>Beri nama/note (misal: <em>Aplikasi Evaluasi PKK</em>) dan set masa berlaku (Expiration).</li>
+          <li>Centang centang izin <strong>repo</strong> (untuk Classic Token) atau berikan izin <strong>Contents: Read and write</strong> (untuk Fine-grained token).</li>
+          <li>Klik <strong>Generate token</strong>, salin kode token tersebut (awalan <code>ghp_</code> / <code>github_pat_</code>) dan tempel pada kolom di atas.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>🗑️ 11. Reset Data Siswa &amp; Data Ter-Embed</h3>
       <p style="font-size:13px; margin:0 0 10px 0; color:var(--text-secondary);">Hapus semua data siswa yang sedang/sudah ujian agar file HTML yang dibagikan benar-benar bersih tanpa bekas data.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
         <button class="btn btn-danger" onclick="resetDataSiswa()" style="padding:8px 15px; font-size:13px;">🗑️ Reset Data Siswa</button>
@@ -580,23 +655,29 @@
       <div id="statusResetSiswa"></div>
     </div>
 
-    <div class="panel panel-highlight" style="margin-top:20px; border-left: 6px solid var(--accent-green);">
-      <h3>💾 11. Simpan Semua Pengaturan &amp; Download File HTML</h3>
+    <div class="panel panel-highlight" id="panelSimpanPermanen" style="margin-top:20px; border-left: 6px solid var(--accent-green);">
+      <h3>💾 12. Menu Simpan Permanent HTML</h3>
       <p style="font-size:13px; margin:0 0 10px 0; color:var(--text-primary);">
-        Gunakan tombol di bawah untuk <strong>menyimpan seluruh perubahan pengaturan</strong> yang sudah dilakukan (Judul, Token, Password, Durasi, Jumlah Soal, Excel Soal, Pengacakan, Status Reset, Score/KKM, Batas Pelanggaran, dan Google Sheet URL) agar tidak hilang, atau langsung mendownload file HTML versi terbaru.
+        Menu ini digunakan untuk <strong>menyimpan seluruh pengaturan secara permanent ke dalam file HTML</strong> (Judul, Token, Password, Durasi, Jumlah Soal, Excel Soal, Pengacakan, Status Reset, Score/KKM, Batas Pelanggaran, dan Google Sheet URL).
       </p>
-      <div class="alert-info">
+      <div class="panel-row" style="margin-bottom:12px;">
+        <label style="margin:0; font-weight:bold;">Otomatis Simpan Permanent HTML:</label>
+        <label class="toggle-switch"><input type="checkbox" id="toggleAutoSaveHTML" onchange="simpanAutoSaveHTMLToggle()"><span class="slider"></span></label>
+        <span id="statusAutoSaveHTML" class="status-badge status-on">AKTIF</span>
+      </div>
+      <p class="info-small">⚠️ Ketika fitur ini <strong>AKTIF</strong>, setiap terjadi perubahan pengaturan pada Dashboard Guru, HTML akan tersimpan secara permanent secara otomatis.</p>
+      <div class="alert-info" style="margin-top:10px;">
         <strong>📋 Langkah-langkah Simpan &amp; Distribusi:</strong>
         <ol class="step-list">
-          <li>Klik tombol <strong>"💾 Simpan Semua Pengaturan"</strong> di bawah untuk menyimpan perubahan.</li>
-          <li>Klik <strong>" Download HTML Terbaru"</strong> untuk mengunduh file HTML baru.</li>
+          <li>Pengaturan yang diubah akan tersimpan otomatis jika fitur "Otomatis Simpan Permanent HTML" diaktifkan.</li>
+          <li>Atau klik tombol <strong>"💾 Simpan Permanent HTML"</strong> di bawah untuk mengunduh file HTML secara manual.</li>
           <li>Ganti file HTML lama di hosting / GitHub Pages dengan file baru ini.</li>
         </ol>
       </div>
       <div class="panel-row" style="margin-top:15px; flex-wrap: wrap; gap: 10px; align-items: center;">
-        <button class="btn btn-success" onclick="simpanSemuaPengaturan()" style="padding:12px 25px; font-size:15px; font-weight:bold;">💾 Simpan Semua Pengaturan</button>
-        <button class="btn btn-primary" onclick="simpanPermanenKeHTML()" style="padding:12px 25px; font-size:15px; font-weight:bold; background:var(--accent-blue);"> Download HTML Terbaru</button>
-        <span style="font-size:13px; color:var(--text-secondary); margin-left: auto;">Versi: <strong id="currentVersionDisplay">v5.12</strong></span>
+        <button class="btn btn-success" onclick="simpanSemuaPengaturan()" style="padding:12px 25px; font-size:15px; font-weight:bold;">💾 Simpan Pengaturan</button>
+        <button class="btn btn-primary" onclick="simpanPermanenKeHTML()" style="padding:12px 25px; font-size:15px; font-weight:bold; background:var(--accent-blue);">💾 Simpan Permanent HTML</button>
+        <span style="font-size:13px; color:var(--text-secondary); margin-left: auto;">Versi: <strong id="currentVersionDisplay">v5.14</strong></span>
       </div>
       <div id="statusSimpanSemua" style="margin-top:10px;"></div>
       <div id="statusSimpanPermanen" style="margin-top:10px;"></div>
@@ -641,56 +722,50 @@
 </div>
 
 <script>
-const HTML_VERSION = "5.13";
+const HTML_VERSION = "5.14";
 
 // __CONFIG_START__
-const JUDUL_DEFAULT = "FORMAT SOAL";
-const SUBJUDUL_DEFAULT = "MATERI BAB";
+const JUDUL_DEFAULT = "EVALUASI PKK";
+const SUBJUDUL_DEFAULT = "MATERI BAB 1";
 const PASSWORD_DEFAULT = "guru123";
 const TOKEN_DEFAULT = "2026";
-const GOOGLE_SHEET_URL_DEFAULT = "https://script.google.com/macros/s/AKfycby1GeENSeS8rGqVaN6CWwkkKK1xhNQxS4x-fTZ3hxc8bM2GDMkT5I7udv_Hz2Vnd3ag/exec";
-const DURASI_DEFAULT = 40;
+const GOOGLE_SHEET_URL_DEFAULT = "";
+const DURASI_DEFAULT = 35;
 const JUMLAH_SOAL_DEFAULT = 0;
 const ACAK_DEFAULT = true;
 const ACAK_OPSI_DEFAULT = true;
 const ENABLE_RESET_DEFAULT = false;
+const AUTO_SAVE_HTML_DEFAULT = true;
 const MAX_PELANGGARAN_DEFAULT = 6;
 const NILAI_MAKSIMAL_DEFAULT = 100;
 const NILAI_KKM_DEFAULT = 75;
 const TAMPIL_NILAI_DEFAULT = true;
-const CETAK_FONT_DEFAULT = "'Times New Roman', serif";
-const CETAK_KERTAS_DEFAULT = "F4";
-const CETAK_UKURAN_FONT_DEFAULT = "12";
-const CETAK_SPASI_DEFAULT = "1";
-const CETAK_MARGIN_ATAS_DEFAULT = "1.5";
-const CETAK_MARGIN_BAWAH_DEFAULT = "1.5";
-const CETAK_MARGIN_KIRI_DEFAULT = "1.5";
-const CETAK_MARGIN_KANAN_DEFAULT = "1.5";
-const CETAK_KUNCI_DEFAULT = "akhir";
-const CETAK_ACAK_DEFAULT = "tidak";
-const SOAL_DEFAULT = [{"q":"Teknologi informasi dan komunikasi dapat diartikan sebagai segala kegiatan yang berkaitan dengan pemrosesan, manipulasi, pengolahan, pemindahan, dan penyampaian informasi menggunakan suatu media. Pernyataan ini merujuk pada definisi...","o":["TIK","Hardware","Software","Brainware","Jaringan"],"a":0}];
+const GITHUB_TOKEN_DEFAULT = "";
+const GITHUB_OWNER_DEFAULT = "";
+const GITHUB_REPO_DEFAULT = "";
+const GITHUB_PATH_DEFAULT = "index.html";
+const GITHUB_BRANCH_DEFAULT = "main";
+const AUTO_PUSH_GITHUB_DEFAULT = false;
+const SOAL_DEFAULT = [{"q":"Siapakah yang disebut sebagai wirausahawan menurut teks materi?","o":["Seseorang yang memiliki kemampuan untuk mengatur dan mengembangkan suatu usaha","Seseorang yang hanya bekerja untuk mencari gaji bulanan","Seseorang yang menghindari segala bentuk risiko bisnis","Seseorang yang bergantung sepenuhnya pada investor","Seseorang yang bekerja di instansi pemerintah"],"a":0},{"q":"Berikut ini yang merupakan contoh wirausaha dalam pembuatan produk-produk teknik komputer dan informatika adalah...","o":["Pertanian hidroponik dan perikanan darat","Jasa pembuat brosur, poster, dan pembuatan web","Perdagangan barang konsumsi secara tradisional","Industri pengolahan bahan baku logam berat","Jasa konsultan hukum dan perpajakan"],"a":1},{"q":"Berdasarkan Tabel 1.1, faktor yang memengaruhi semangat kerja wirausaha yang berkaitan dengan adanya konsumen dan pemasok sebagai relasi bisnisnya adalah...","o":["Minat","Modal","Relasi","Peluang","Inovasi"],"a":2},{"q":"Salah satu faktor penyebab keberhasilan seorang wirausaha adalah...","o":["Cepat puas dengan hasil yang dicapai","Mengandalkan keberuntungan semata","Mengabaikan masukan dari konsumen","Memiliki kemampuan memimpin dan mengambil keputusan","Tidak memiliki perencanaan yang matang"],"a":3},{"q":"Faktor-faktor penyebab kegagalan seorang wirausaha di antaranya adalah...","o":["Memiliki relasi yang sangat luas","Selalu berorientasi pada keuntungan","Memiliki visi dan perspektif masa depan","Tekun dan disiplin dalam bekerja","Kurang ulet, cepat putus asa, dan kurang teliti"],"a":4},{"q":"Perbedaan persepsi antara wiraswasta dan wirausaha terletak pada penekanan. Wiraswasta lebih menekankan pada...","o":["Kemandirian (swasta) dan survival","Keahlian dalam mengelola keuangan korporat","Penguasaan teknologi informasi terkini","Ekspansi pasar ke luar negeri","Keuntungan finansial semata"],"a":0},{"q":"Berdasarkan data BPS Sensus Ekonomi 2016, jumlah wirausahawan di Indonesia mengalami kenaikan sekitar...","o":["1 juta orang dari hasil SE 2006","4 juta orang dari hasil SE 2006","10 juta orang dari hasil SE 2006","17 juta orang dari hasil SE 2006","22 juta orang dari hasil SE 2006"],"a":1},{"q":"Bekerja efektif dan efisien berarti...","o":["Bekerja tanpa henti mengorbankan waktu istirahat","Bekerja hanya ketika ada pengawasan dari atasan","Mencapai hasil sesuai rencana dengan pengorbanan waktu, tenaga, pikiran, dan biaya sekecil mungkin","Bekerja dengan biaya tinggi untuk hasil yang maksimal","Mengabaikan perencanaan demi kecepatan kerja"],"a":2},{"q":"Tiga tipe kreativitas yang dapat dilakukan oleh calon wirausaha adalah...","o":["Meniru, menyalin, dan mendistribusikan","Merencanakan, mengeksekusi, dan mengevaluasi","Mengamati, menanya, dan mengasosiasikan","Menciptakan, memodifikasi, dan mengombinasikan","Menghindar, menunda, dan menyerah"],"a":3},{"q":"Ciri-ciri seseorang yang memiliki motif berprestasi tinggi dalam wirausaha adalah...","o":["Menghindari tanggung jawab personal","Menyalahkan orang lain atas kegagalan","Tidak memerlukan umpan balik dari pasar","Takut menghadapi risiko yang diperhitungkan","Selalu memerlukan umpan balik yang segera untuk melihat keberhasilan dan kegagalan"],"a":4},{"q":"(Kasus) Seorang pemilik usaha percetakan gagal karena tidak mampu mengatur pengeluaran dan penerimaan secara cermat, sehingga aliran kas terhambat. Faktor kegagalan apa yang dialami?","o":["Kurang mampu dalam mengendalikan keuangan","Lokasi yang kurang memadai","Ketidakmampuan dalam melakukan transisi","Gagal dalam sebuah perencanaan","Kurangnya pengawasan peralatan"],"a":0},{"q":"Strategi awal dalam menjadi wirausaha dengan mencari pangsa pasar khusus yang kebutuhan utamanya belum terpenuhi oleh kompetitor disebut...","o":["Ekspansi pasar massal","Mencari pasar khusus (niche market)","Diversifikasi produk secara acak","Monopoli pasar lokal","Penetapan harga dumping"],"a":1},{"q":"Risiko yang tidak dapat diukur secara matematis disebut...","o":["Risiko biasa","Risiko sistemik","Risiko yang ambigu","Risiko murni","Risiko spekulatif"],"a":2},{"q":"Karakteristik wirausaha yang memiliki dorongan kuat, energik, memiliki ketekunan, dan berorientasi pada keuntungan disebut...","o":["Leadership","Orisinal","Risk and challenge","Profit oriented","Berorientasi pada masa depan"],"a":3},{"q":"Dalam identifikasi usaha berdasarkan karakteristik wirausaha, seorang wirausaha yang membuat keputusan secara cepat dengan penuh perhitungan menunjukkan sifat...","o":["Dream","Doers","Determination","Dedication","Decisiveness"],"a":4},{"q":"Mengakui jika memiliki kesalahan merupakan elemen penting dalam...","o":["Mentalitas seorang wirausaha tangguh","Strategi menghindari pajak","Teknik manipulasi pasar","Cara menutupi kelemahan produk","Metode menunda pengambilan keputusan"],"a":0},{"q":"Unsur penunjang bekerja efektif dan efisien yang berarti hemat dalam menggunakan waktu, tenaga, dan biaya adalah...","o":["Ketepatan","Penghematan","Kecermatan","Kecepatan","Keselamatan"],"a":1},{"q":"Tahap di mana ide bisnis yang cocok dibiarkan mengendap dahulu agar makin matang sebelum dibuat rencana disebut...","o":["Analisis SWOT","Eksekusi langsung","Masa inkubasi","Evaluasi akhir","Pembubaran tim"],"a":2},{"q":"Penghambat pemikiran kreatif berupa ketentuan atau karakteristik tertentu untuk suatu hal yang membatasi cara pandang disebut...","o":["Pemikiran lain","Pemikiran kemungkinan","Intuisi bisnis","Stereotip","Fleksibilitas"],"a":3},{"q":"Jika arah pendidikan adalah untuk menghasilkan sosok individu yang lebih lihai dalam bisnis/uang atau memiliki kecerdasan finansial (FQ), pendidikan yang lebih tepat adalah...","o":["Pendidikan akademik murni","Pendidikan vokasional tanpa praktik","Pendidikan karakter sosial","Pendidikan kewarganegaraan","Pendidikan wirausaha"],"a":4},{"q":"(Kasus) Seorang wirausaha desain grafis selalu meniru tren tanpa modifikasi dan cepat menyerah saat ada kritik minor. Faktor kegagalan yang paling dominan adalah...","o":["Kurang kreatif dan cepat putus asa","Memiliki modal yang terlalu besar","Terlalu banyak relasi bisnis","Lokasi usaha yang sangat strategis","Kelebihan dalam kemampuan manajerial"],"a":0},{"q":"Mengapa wirausaha di bidang produk kreatif teknik komputer dan informatika dituntut untuk kreatif, efektif, dan efisien?","o":["Agar dapat menghindari semua bentuk risiko","Untuk mencapai hasil sesuai rencana dengan pengorbanan sekecil mungkin","Supaya dapat meniru kompetitor dengan mudah","Agar tidak perlu berinteraksi dengan konsumen","Untuk menghabiskan modal usaha secepat mungkin"],"a":1},{"q":"Dalam konteks risiko, ketidakpastian murni didefinisikan sebagai...","o":["Risiko yang dapat dihitung dengan rumus statistik","Risiko yang hanya terjadi pada perusahaan besar","Ketidakpastian yang tidak bisa diukur dengan cara apa pun","Risiko yang sudah memiliki asuransi jaminan","Ketidakpastian yang dapat diprediksi dengan akurat"],"a":2},{"q":"Tindakan wirausaha yang bersedia mendistribusikan kepemilikan bisnisnya pada orang-orang kepercayaannya sesuai dengan karakteristik...","o":["Destiny","Dollars","Details","Distribute","Devotion"],"a":3},{"q":"Sifat pesimis pada wirausaha sebenarnya berkaitan erat dengan...","o":["Fokus seseorang akan peluang emas","Keyakinan pada keberhasilan jangka panjang","Kemampuan analisis data yang tinggi","Keberanian mengambil tantangan baru","Fokus seseorang akan kegagalan"],"a":4},{"q":"Contoh penerapan \"Melihat segala sesuatu dengan cara yang tidak biasa\" dalam kreativitas wirausaha adalah...","o":["Menemukan solusi desain yang tidak konvensional untuk masalah klien","Mengikuti semua instruksi klien tanpa pertanyaan","Meniru persis desain pesaing yang sedang viral","Menolak menggunakan teknologi baru dalam bekerja","Bekerja hanya pada jam kantor yang standar"],"a":0},{"q":"Apa tujuan utama dari analisis kekuatan, kelemahan, peluang, dan ancaman dalam perencanaan bekerja efektif?","o":["Untuk menakut-nakuti calon investor","Mengandung bahan-bahan yang sangat penting untuk perencanaan","Agar terlihat sibuk di depan karyawan","Untuk menunda peluncuran produk","Menghindari pembuatan laporan keuangan"],"a":1},{"q":"Seorang wirausaha yang mencintai pekerjaan bisnisnya dan produk yang dihasilkannya akan mendorong keberhasilan yang sangat efektif untuk menjual produknya. Ini adalah karakteristik...","o":["Dream","Doers","Devotion","Determination","Details"],"a":2},{"q":"Faktor eksternal yang dapat meningkatkan semangat kerja wirausaha menurut Tabel 1.1 adalah...","o":["Minat dan bakat alami","Modal pribadi yang besar","Kesehatan fisik yang prima","Peluang dan Relasi","Pendidikan formal yang tinggi"],"a":3},{"q":"Mengapa wirausaha harus menghindari kata-kata yang mematahkan semangat?","o":["Agar tidak perlu mendengarkan saran siapa pun","Karena semua kritik pasti salah dan tidak berguna","Supaya bisa sombong terhadap pesaing","Agar tidak perlu melakukan introspeksi diri","Agar usaha bisa maju dan tidak terhambat oleh kritik yang tidak masuk akal"],"a":4},{"q":"(Kasus) Sebuah startup pembuatan web mengalami kegagalan karena pendirinya tidak memiliki kemampuan mengelola SDM dan mengoordinasikan operasi. Berdasarkan materi, ini termasuk faktor kegagalan...","o":["Kurang berpengalaman baik dalam kemampuan teknik","Lokasi yang kurang memadai","Ketidakmampuan dalam melakukan transisi","Gagal dalam sebuah perencanaan","Kurangnya pengawasan peralatan"],"a":0},{"q":"Mengapa \"Dollars\" dalam karakteristik wirausaha (Tabel 1.3) menyatakan bahwa uang bukan motivasi utama, melainkan ukuran kesuksesan?","o":["Karena wirausaha dilarang mencari keuntungan","Karena motivasi wirausaha bukan karena masalah uang, tetapi uang dianggap sebagai ukuran kesuksesan bisnisnya","Karena uang tidak memiliki nilai dalam bisnis","Karena wirausaha hanya mengandalkan barter","Karena keuntungan hanya bersifat sementara"],"a":1},{"q":"Bagaimana hubungan antara sikap \"fleksibel\" dan \"berani mengambil risiko\" dalam menghadapi perubahan iklim usaha?","o":["Fleksibel berarti menolak perubahan, sedangkan risiko harus dihindari","Fleksibel hanya berlaku untuk usaha besar, risiko untuk usaha kecil","Sikap fleksibel adalah adaptif terhadap perubahan situasional, yang merupakan bentuk nyata dari keberanian mengambil risiko untuk bertahan","Tidak ada hubungan antara fleksibilitas dan pengambilan risiko","Fleksibel berarti mengubah tujuan bisnis setiap hari tanpa alasan"],"a":2},{"q":"Jika seorang wirausaha hanya berfokus pada \"pemikiran kemungkinan (probabilitas)\" secara berlebihan, apa dampak negatifnya terhadap kreativitas?","o":["Meningkatkan kecepatan inovasi secara drastis","Mempermudah pengambilan keputusan yang kompleks","Membuat wirausaha terlalu optimis tanpa dasar","Menghambat seseorang dalam menghadapi kenyataan yang sebenarnya dan melewatkan kesempatan yang hanya datang sekali","Membantu wirausaha menghindari semua bentuk kegagalan"],"a":3},{"q":"(Kasus) Seorang animator memiliki ide brilian tetapi terus menunda pelaksanaannya karena menunggu \"waktu yang paling tepat\". Menurut strategi wirausaha, apa kesalahan mendasarnya?","o":["Terlalu cepat dalam mengambil keputusan","Tidak melakukan analisis SWOT","Kelebihan modal dalam pengembangan ide","Mengabaikan kelemahan kompetitor","Tidak segera mengimplementasi ide menjadi sebuah tindakan, karena waktu paling tepat tidak bisa diprediksi"],"a":4},{"q":"Mengapa pendidikan wiraswasta lebih tepat untuk menghasilkan individu dengan kecerdasan emosional (EQ) dan adversitas (AQ)?","o":["Karena wiraswasta menekankan pada kemandirian, mental baja, dan menghadapi tantangan hidup","Karena wiraswasta hanya fokus pada perhitungan laba rugi","Karena wiraswasta tidak memerlukan interaksi sosial","Karena wiraswasta menjamin kekayaan instan","Karena wiraswasta menghindari tanggung jawab sosial"],"a":0},{"q":"Dalam konteks \"Destiny\" pada Tabel 1.3, seorang wirausaha bertanggung jawab terhadap nasibnya. Apa implikasi praktisnya dalam pengambilan keputusan bisnis?","o":["Selalu menunggu instruksi dari pemerintah","Tidak mau tergantung pada orang lain dalam menentukan arah dan tujuan bisnis","Menyerahkan semua keputusan kepada mitra bisnis","Mengandalkan keberuntungan dalam setiap langkah","Menghindari tanggung jawab atas kegagalan"],"a":1},{"q":"(Analisis) Seorang wirausaha jasa foto shooting gagal karena lokasinya di daerah yang sangat sepi dan sulit dijangkau, meskipun kualitas fotonya bagus. Ini adalah contoh faktor kegagalan...","o":["Sikap yang kurang sungguh-sungguh","Kurang berpengalaman dalam kemampuan teknik","Lokasi yang kurang memadai","Tidak kompeten dalam manajerial","Kurangnya pengawasan peralatan"],"a":2},{"q":"Bagaimana cara seorang wirausaha yang tangguh \"Mengenal Bisnis Anda\" sesuai dengan materi?","o":["Dengan mengucilkan diri dari lingkungan sekitar","Dengan menganggap bisnis sudah berjalan sempurna tanpa evaluasi","Dengan menutup diri dari kritik dan saran","Membuka diri terhadap informasi yang berkembang dan menghargai apa pun yang bisa membantu perkembangan bisnis","Dengan hanya fokus pada keuntungan jangka pendek"],"a":3},{"q":"Jika seorang wirausaha memiliki \"Dedication\" yang tinggi, bagaimana pola perilakunya terhadap kepentingan pribadi dan keluarga?","o":["Selalu mengutamakan liburan daripada pekerjaan","Tidak pernah bekerja di luar jam kantor","Mengabaikan bisnis demi kepentingan pribadi","Membagi waktu secara ketat tanpa fleksibilitas","Kadang-kadang mengorbankan kepentingan keluarga untuk sementara waktu, memusatkan semua perhatian pada bisnis"],"a":4},{"q":"(Kasus) Seorang wirausaha muda selalu meminta pendapat orang lain sebelum mengambil keputusan sekecil apa pun, sehingga proses bisnis menjadi sangat lambat. Karakteristik 10D yang paling dilanggar adalah...","o":["Decisiveness","Dream","Doers","Determination","Distribute"],"a":0},{"q":"Mengapa \"Kejujuran\" disebut sebagai modal awal yang sangat berharga bagi wirausahawan tangguh?","o":["Karena kejujuran membuat bisnis berjalan lambat tapi pasti","Karena kejujuran dapat menimbulkan respek dari konsumen dan menjamin keberlangsungan usaha","Karena kejujuran adalah syarat untuk mendapatkan modal bank","Karena kejujuran memudahkan dalam menipu pesaing","Karena kejujuran tidak memiliki dampak pada reputasi bisnis"],"a":1},{"q":"Dalam pengembangan kreativitas, \"Mengombinasikan\" berarti...","o":["Menghapus ide lama dan menggantinya dengan ide baru","Meniru ide orang lain tanpa perubahan","Aktivitas mengombinasikan dua hal atau lebih yang sebelumnya tidak saling berhubungan","Memisahkan ide menjadi bagian-bagian kecil","Menolak semua ide yang berasal dari luar"],"a":2},{"q":"Apa perbedaan mendasar antara \"Masa Inkubasi\" dan \"Gagal dalam sebuah perencanaan\"?","o":["Masa inkubasi adalah kegagalan total, sedangkan gagal perencanaan adalah sukses","Masa inkubasi dilakukan oleh manajer, gagal perencanaan oleh wirausaha","Masa inkubasi membutuhkan modal besar, gagal perencanaan tidak","Masa inkubasi adalah membiarkan ide mengendap agar matang, sedangkan gagal perencanaan adalah kesalahan dalam menyusun langkah awal yang mengakibatkan kesulitan pelaksanaan","Tidak ada perbedaan, keduanya adalah hal yang sama"],"a":3},{"q":"Seorang wirausaha berhasil mengidentifikasi keluhan pelanggan terhadap kompetitor dan menjadikannya peluang untuk menawarkan layanan yang lebih baik. Strategi apa yang diterapkan?","o":["Mencari pasar khusus yang belum tergarap","Peka terhadap tren terbaru","Segera mengimplementasi ide","Hindari kata-kata yang mematahkan semangat","Eksplorasikan kelemahan kompetitor"],"a":4},{"q":"Mengapa sifat \"optimis dengan masa depan\" penting, dan apa bahaya dari sifat kehati-hatian yang berlebihan?","o":["Optimis memelihara rencana dan tindakan, sedangkan kehati-hatian berlebihan dapat menyebabkan hilangnya peluang bisnis","Optimis membuat wirausaha ceroboh, kehati-hatian menjamin kesuksesan","Optimis tidak diperlukan, yang penting adalah pesimis","Kehati-hatian berlebihan selalu menghasilkan keuntungan maksimal","Optimis hanya berguna untuk usaha yang sudah besar"],"a":0},{"q":"Analisis data BPS: Peningkatan jumlah wirausaha di luar Pulau Jawa terjadi terutama karena...","o":["Ketatnya regulasi pemerintah di luar Jawa","Belum ketatnya persaingan usaha di luar Jawa dan percepatan pertumbuhan yang signifikan","Tingginya biaya hidup di Pulau Jawa","Kurangnya sumber daya alam di luar Jawa","Kebijakan larangan berwirausaha di Pulau Jawa"],"a":1},{"q":"Jenis risiko yang paling sering dihadapi oleh seorang pengusaha, terutama jika badan usaha yang dimilikinya mengeluarkan produk baru yang belum ada di pasaran, adalah...","o":["Risiko biasa","Risiko yang ambigu","Ketidakpastian murni","Risiko finansial terukur","Risiko operasional standar"],"a":2},{"q":"Seorang wirausaha desain grafis terus belajar software baru dan menyesuaikan gaya desain dengan tren terkini tanpa kehilangan jati diri. Ini mencerminkan karakteristik...","o":["Profit oriented","Risk and challenge","Leadership","Inovatif, kreatif, dan fleksibel","Destiny"],"a":3},{"q":"Kesimpulan utama dari perbedaan wirausaha yang sukses dan tidak lancar berdasarkan sikap dan perilaku adalah...","o":["Wirausaha sukses mengandalkan keberuntungan, yang tidak lancar karena nasib","Wirausaha sukses tidak pernah mengalami kegagalan sedikit pun","Wirausaha sukses selalu memiliki modal besar sejak awal","Wirausaha yang tidak lancar sebenarnya lebih kreatif daripada yang sukses","Wirausaha sukses memiliki sikap tangguh, berani mengambil risiko, dan terus berinovasi, sedangkan yang tidak lancar cenderung cepat putus asa dan kurang adaptif"],"a":4}];
 // __CONFIG_END__
 
 // __RUNTIME_CONFIG_START__
-let configDurasi = parseInt(localStorage.getItem('configDurasi') || (typeof DURASI_DEFAULT !== 'undefined' ? DURASI_DEFAULT : 40));
+let configDurasi = parseInt(localStorage.getItem('configDurasi') || (typeof DURASI_DEFAULT !== 'undefined' ? DURASI_DEFAULT : 35));
 let configJumlahSoal = parseInt(localStorage.getItem('configJumlahSoal') || (typeof JUMLAH_SOAL_DEFAULT !== 'undefined' ? JUMLAH_SOAL_DEFAULT : 0));
 let configAcak = localStorage.getItem('configAcak') !== null ? localStorage.getItem('configAcak') === 'true' : (typeof ACAK_DEFAULT !== 'undefined' ? ACAK_DEFAULT : true);
 let configAcakOpsi = localStorage.getItem('configAcakOpsi') !== null ? localStorage.getItem('configAcakOpsi') === 'true' : (typeof ACAK_OPSI_DEFAULT !== 'undefined' ? ACAK_OPSI_DEFAULT : true);
 let configEnableReset = localStorage.getItem('configEnableReset') !== null ? localStorage.getItem('configEnableReset') === 'true' : (typeof ENABLE_RESET_DEFAULT !== 'undefined' ? ENABLE_RESET_DEFAULT : false);
+let configAutoSaveHTML = localStorage.getItem('configAutoSaveHTML') !== null ? localStorage.getItem('configAutoSaveHTML') === 'true' : (typeof AUTO_SAVE_HTML_DEFAULT !== 'undefined' ? AUTO_SAVE_HTML_DEFAULT : true);
 let configMaxPelanggaran = parseInt(localStorage.getItem('configMaxPelanggaran') || (typeof MAX_PELANGGARAN_DEFAULT !== 'undefined' ? MAX_PELANGGARAN_DEFAULT : 6));
 let configNilaiMaksimal = parseInt(localStorage.getItem('configNilaiMaksimal') || (typeof NILAI_MAKSIMAL_DEFAULT !== 'undefined' ? NILAI_MAKSIMAL_DEFAULT : 100));
 let configNilaiKKM = parseInt(localStorage.getItem('configNilaiKKM') || (typeof NILAI_KKM_DEFAULT !== 'undefined' ? NILAI_KKM_DEFAULT : 75));
 let configTampilNilai = localStorage.getItem('configTampilNilai') !== null ? localStorage.getItem('configTampilNilai') !== 'false' : (typeof TAMPIL_NILAI_DEFAULT !== 'undefined' ? TAMPIL_NILAI_DEFAULT : true);
-let configCetakFont = localStorage.getItem('configCetakFont') || (typeof CETAK_FONT_DEFAULT !== 'undefined' ? CETAK_FONT_DEFAULT : "'Times New Roman', serif");
-let configCetakKertas = localStorage.getItem('configCetakKertas') || (typeof CETAK_KERTAS_DEFAULT !== 'undefined' ? CETAK_KERTAS_DEFAULT : "F4");
-let configCetakUkuranFont = localStorage.getItem('configCetakUkuranFont') || (typeof CETAK_UKURAN_FONT_DEFAULT !== 'undefined' ? CETAK_UKURAN_FONT_DEFAULT : "12");
-let configCetakSpasi = localStorage.getItem('configCetakSpasi') || (typeof CETAK_SPASI_DEFAULT !== 'undefined' ? CETAK_SPASI_DEFAULT : "1");
-let configCetakMarginAtas = localStorage.getItem('configCetakMarginAtas') || (typeof CETAK_MARGIN_ATAS_DEFAULT !== 'undefined' ? CETAK_MARGIN_ATAS_DEFAULT : "1.5");
-let configCetakMarginBawah = localStorage.getItem('configCetakMarginBawah') || (typeof CETAK_MARGIN_BAWAH_DEFAULT !== 'undefined' ? CETAK_MARGIN_BAWAH_DEFAULT : "1.5");
-let configCetakMarginKiri = localStorage.getItem('configCetakMarginKiri') || (typeof CETAK_MARGIN_KIRI_DEFAULT !== 'undefined' ? CETAK_MARGIN_KIRI_DEFAULT : "1.5");
-let configCetakMarginKanan = localStorage.getItem('configCetakMarginKanan') || (typeof CETAK_MARGIN_KANAN_DEFAULT !== 'undefined' ? CETAK_MARGIN_KANAN_DEFAULT : "1.5");
-let configCetakKunci = localStorage.getItem('configCetakKunci') || (typeof CETAK_KUNCI_DEFAULT !== 'undefined' ? CETAK_KUNCI_DEFAULT : "akhir");
-let configCetakAcak = localStorage.getItem('configCetakAcak') || (typeof CETAK_ACAK_DEFAULT !== 'undefined' ? CETAK_ACAK_DEFAULT : "tidak");
+let configGithubToken = localStorage.getItem('configGithubToken') || (typeof GITHUB_TOKEN_DEFAULT !== 'undefined' ? GITHUB_TOKEN_DEFAULT : '');
+let configGithubOwner = localStorage.getItem('configGithubOwner') || (typeof GITHUB_OWNER_DEFAULT !== 'undefined' ? GITHUB_OWNER_DEFAULT : '');
+let configGithubRepo = localStorage.getItem('configGithubRepo') || (typeof GITHUB_REPO_DEFAULT !== 'undefined' ? GITHUB_REPO_DEFAULT : '');
+let configGithubPath = localStorage.getItem('configGithubPath') || (typeof GITHUB_PATH_DEFAULT !== 'undefined' ? GITHUB_PATH_DEFAULT : 'index.html');
+let configGithubBranch = localStorage.getItem('configGithubBranch') || (typeof GITHUB_BRANCH_DEFAULT !== 'undefined' ? GITHUB_BRANCH_DEFAULT : 'main');
+let configAutoPushGithub = localStorage.getItem('configAutoPushGithub') !== null ? localStorage.getItem('configAutoPushGithub') === 'true' : (typeof AUTO_PUSH_GITHUB_DEFAULT !== 'undefined' ? AUTO_PUSH_GITHUB_DEFAULT : false);
 // __RUNTIME_CONFIG_END__
 
 const UKURAN_KERTAS = {
@@ -704,7 +779,7 @@ const UKURAN_KERTAS = {
 
 const savedVersion = localStorage.getItem('htmlVersion');
 if (savedVersion !== HTML_VERSION) {
-  ['configJudul','configSubJudul','configPassword','configToken','configGoogleSheetUrl','configDurasi','configJumlahSoal','configAcak','configAcakOpsi','configEnableReset','configMaxPelanggaran','configNilaiMaksimal','configNilaiKKM','configTampilNilai','configCetakFont','configCetakKertas','configCetakUkuranFont','configCetakSpasi','configCetakMarginAtas','configCetakMarginBawah','configCetakMarginKiri','configCetakMarginKanan','configCetakKunci','configCetakAcak','soalAktif'].forEach(k => localStorage.removeItem(k));
+  ['configJudul','configSubJudul','configPassword','configToken','configGoogleSheetUrl','configDurasi','configJumlahSoal','configAcak','configAcakOpsi','configEnableReset','configAutoSaveHTML','configMaxPelanggaran','configNilaiMaksimal','configNilaiKKM','configTampilNilai','soalAktif'].forEach(k => localStorage.removeItem(k));
   localStorage.setItem('htmlVersion', HTML_VERSION);
 }
 
@@ -767,20 +842,382 @@ function loadDashboardData() {
   document.getElementById('toggleAcak').checked = configAcak;
   document.getElementById('toggleAcakOpsi').checked = configAcakOpsi;
   document.getElementById('toggleEnableReset').checked = configEnableReset;
-  updateStatusAcak(); updateStatusAcakOpsi(); updateStatusEnableReset();
-  if (document.getElementById('cetakFont')) document.getElementById('cetakFont').value = configCetakFont;
-  if (document.getElementById('cetakKertas')) document.getElementById('cetakKertas').value = configCetakKertas;
-  if (document.getElementById('cetakUkuranFont')) document.getElementById('cetakUkuranFont').value = configCetakUkuranFont;
-  if (document.getElementById('cetakSpasi')) document.getElementById('cetakSpasi').value = configCetakSpasi;
-  if (document.getElementById('cetakMarginAtas')) document.getElementById('cetakMarginAtas').value = configCetakMarginAtas;
-  if (document.getElementById('cetakMarginBawah')) document.getElementById('cetakMarginBawah').value = configCetakMarginBawah;
-  if (document.getElementById('cetakMarginKiri')) document.getElementById('cetakMarginKiri').value = configCetakMarginKiri;
-  if (document.getElementById('cetakMarginKanan')) document.getElementById('cetakMarginKanan').value = configCetakMarginKanan;
-  if (document.getElementById('cetakKunci')) document.getElementById('cetakKunci').value = configCetakKunci;
-  if (document.getElementById('cetakAcak')) document.getElementById('cetakAcak').value = configCetakAcak;
+  document.getElementById('toggleAutoSaveHTML').checked = configAutoSaveHTML;
+  updateStatusAcak(); updateStatusAcakOpsi(); updateStatusEnableReset(); updateStatusAutoSaveHTML();
+  document.getElementById('inputGithubToken').value = configGithubToken;
+  document.getElementById('inputGithubOwner').value = configGithubOwner;
+  document.getElementById('inputGithubRepo').value = configGithubRepo;
+  document.getElementById('inputGithubPath').value = configGithubPath;
+  document.getElementById('inputGithubBranch').value = configGithubBranch;
+  document.getElementById('toggleAutoPushGithub').checked = configAutoPushGithub;
+  updateStatusAutoPushGithub();
   document.getElementById('jumlahSoalSaatIni').innerText = soalAktif.length;
   document.getElementById('versionBadge').innerText = 'v' + HTML_VERSION;
   document.getElementById('currentVersionDisplay').innerText = 'v' + HTML_VERSION;
+  perbaruiIndikatorStatusOffline();
+}
+
+let autoSaveDebounceTimer = null;
+function triggerAutoSavePermanentHTML() {
+  if (configAutoPushGithub) {
+    localStorage.setItem('pendingGithubSync', 'true');
+    perbaruiIndikatorStatusOffline();
+  }
+  if (configAutoSaveHTML || configAutoPushGithub) {
+    if (autoSaveDebounceTimer) clearTimeout(autoSaveDebounceTimer);
+    autoSaveDebounceTimer = setTimeout(() => {
+      if (configAutoSaveHTML) {
+        simpanPermanenKeHTML(true);
+      }
+      if (configAutoPushGithub) {
+        syncKeGitHub(true);
+      }
+    }, 1000);
+  }
+}
+
+function perbaruiIndikatorStatusOffline() {
+  const statusElem = document.getElementById('statusGithubSync');
+  const isPending = localStorage.getItem('pendingGithubSync') === 'true';
+  if (!statusElem) return;
+
+  if (isPending) {
+    if (!navigator.onLine) {
+      statusElem.innerHTML = '<div class="alert-info">📡 <strong>Kondisi OFFLINE:</strong> Seluruh perubahan data telah tersimpan aman di browser (HP/Laptop) &amp; akan otomatis di-sync ke GitHub saat terhubung kembali ke internet.</div>';
+    } else {
+      statusElem.innerHTML = '<div class="alert-info">⏳ Ada perubahan data yang menunggu sinkronisasi ke GitHub... <button onclick="prosesAntreanGithub()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">⚡ Sync Sekarang</button></div>';
+    }
+  }
+}
+
+function simpanAutoSaveHTMLToggle() {
+  configAutoSaveHTML = document.getElementById('toggleAutoSaveHTML').checked;
+  localStorage.setItem('configAutoSaveHTML', configAutoSaveHTML);
+  updateStatusAutoSaveHTML();
+  if (configAutoSaveHTML) {
+    triggerAutoSavePermanentHTML();
+  }
+}
+
+
+function simpanAutoPushGithubToggle() {
+  configAutoPushGithub = document.getElementById('toggleAutoPushGithub').checked;
+  localStorage.setItem('configAutoPushGithub', configAutoPushGithub);
+  updateStatusAutoPushGithub();
+  if (configAutoPushGithub) {
+    syncKeGitHub(true);
+  }
+}
+
+function updateStatusAutoPushGithub() {
+  const status = document.getElementById('statusAutoPushGithub');
+  if (!status) return;
+  if (configAutoPushGithub) {
+    status.innerText = 'AKTIF';
+    status.className = 'status-badge status-on';
+  } else {
+    status.innerText = 'NONAKTIF';
+    status.className = 'status-badge status-off';
+  }
+}
+
+function simpanKonfigurasiGithub() {
+  const token = document.getElementById('inputGithubToken').value.trim();
+  const owner = document.getElementById('inputGithubOwner').value.trim();
+  const repo = document.getElementById('inputGithubRepo').value.trim();
+  const path = document.getElementById('inputGithubPath').value.trim() || 'index.html';
+  const branch = document.getElementById('inputGithubBranch').value.trim() || 'main';
+
+  configGithubToken = token;
+  configGithubOwner = owner;
+  configGithubRepo = repo;
+  configGithubPath = path;
+  configGithubBranch = branch;
+
+  localStorage.setItem('configGithubToken', configGithubToken);
+  localStorage.setItem('configGithubOwner', configGithubOwner);
+  localStorage.setItem('configGithubRepo', configGithubRepo);
+  localStorage.setItem('configGithubPath', configGithubPath);
+  localStorage.setItem('configGithubBranch', configGithubBranch);
+
+  document.getElementById('statusGithubSync').innerHTML = '<div class="alert-success">✅ Konfigurasi GitHub berhasil disimpan!</div>';
+  triggerAutoSavePermanentHTML();
+}
+
+function encodeUtf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function dapatkanGeneratedHtml() {
+  const savedState = {
+    menuAwal: document.getElementById('menuAwal').style.display,
+    identityForm: document.getElementById('identityForm').style.display,
+    dashboardGuru: document.getElementById('dashboardGuru').style.display,
+    quizArea: document.getElementById('quizArea').style.display,
+    resultArea: document.getElementById('resultArea').style.display,
+    loginModal: document.getElementById('loginModal').style.display,
+    resetModal: document.getElementById('resetModal').style.display,
+    violationOverlay: document.getElementById('violationOverlay').style.display
+  };
+
+  document.getElementById('menuAwal').style.display = 'block';
+  document.getElementById('identityForm').style.display = 'none';
+  document.getElementById('dashboardGuru').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('resultArea').style.display = 'none';
+  document.getElementById('loginModal').style.display = 'none';
+  document.getElementById('resetModal').style.display = 'none';
+  document.getElementById('violationOverlay').style.display = 'none';
+
+  ['statusJudul','statusPassword','statusWaktu','statusImport','statusPengaturanNilai','statusMaxPelanggaran','statusGoogleSheet','statusResetSiswa','statusSimpanPermanen','statusSimpanSemua','statusGithubSync'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '';
+  });
+
+  let htmlText = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  document.getElementById('menuAwal').style.display = savedState.menuAwal;
+  document.getElementById('identityForm').style.display = savedState.identityForm;
+  document.getElementById('dashboardGuru').style.display = savedState.dashboardGuru;
+  document.getElementById('quizArea').style.display = savedState.quizArea;
+  document.getElementById('resultArea').style.display = savedState.resultArea;
+  document.getElementById('loginModal').style.display = savedState.loginModal;
+  document.getElementById('resetModal').style.display = savedState.resetModal;
+  document.getElementById('violationOverlay').style.display = savedState.violationOverlay;
+
+  const newVersion = incrementVersion(HTML_VERSION);
+  localStorage.setItem('htmlVersion', newVersion);
+
+  const newConfigLines = [
+    '// __CONFIG_START__',
+    'const JUDUL_DEFAULT = ' + JSON.stringify(configJudul) + ';',
+    'const SUBJUDUL_DEFAULT = ' + JSON.stringify(configSubJudul) + ';',
+    'const PASSWORD_DEFAULT = ' + JSON.stringify(PASSWORD_GURU) + ';',
+    'const TOKEN_DEFAULT = ' + JSON.stringify(configToken) + ';',
+    'const GOOGLE_SHEET_URL_DEFAULT = ' + JSON.stringify(configGoogleSheetUrl) + ';',
+    'const DURASI_DEFAULT = ' + JSON.stringify(configDurasi) + ';',
+    'const JUMLAH_SOAL_DEFAULT = ' + JSON.stringify(configJumlahSoal) + ';',
+    'const ACAK_DEFAULT = ' + JSON.stringify(configAcak) + ';',
+    'const ACAK_OPSI_DEFAULT = ' + JSON.stringify(configAcakOpsi) + ';',
+    'const ENABLE_RESET_DEFAULT = ' + JSON.stringify(configEnableReset) + ';',
+    'const AUTO_SAVE_HTML_DEFAULT = ' + JSON.stringify(configAutoSaveHTML) + ';',
+    'const MAX_PELANGGARAN_DEFAULT = ' + JSON.stringify(configMaxPelanggaran) + ';',
+    'const NILAI_MAKSIMAL_DEFAULT = ' + JSON.stringify(configNilaiMaksimal) + ';',
+    'const NILAI_KKM_DEFAULT = ' + JSON.stringify(configNilaiKKM) + ';',
+    'const TAMPIL_NILAI_DEFAULT = ' + JSON.stringify(configTampilNilai) + ';',
+    'const GITHUB_TOKEN_DEFAULT = ' + JSON.stringify(configGithubToken) + ';',
+    'const GITHUB_OWNER_DEFAULT = ' + JSON.stringify(configGithubOwner) + ';',
+    'const GITHUB_REPO_DEFAULT = ' + JSON.stringify(configGithubRepo) + ';',
+    'const GITHUB_PATH_DEFAULT = ' + JSON.stringify(configGithubPath) + ';',
+    'const GITHUB_BRANCH_DEFAULT = ' + JSON.stringify(configGithubBranch) + ';',
+    'const AUTO_PUSH_GITHUB_DEFAULT = ' + JSON.stringify(configAutoPushGithub) + ';',
+    'const SOAL_DEFAULT = ' + JSON.stringify(soalAktif) + ';',
+    '// __CONFIG_END__'
+  ];
+  const newConfigBlock = newConfigLines.join('\n');
+
+  const newRuntimeLines = [
+    '// __RUNTIME_CONFIG_START__',
+    'let configDurasi = parseInt(localStorage.getItem("configDurasi") || (typeof DURASI_DEFAULT !== "undefined" ? DURASI_DEFAULT : ' + configDurasi + '));',
+    'let configJumlahSoal = parseInt(localStorage.getItem("configJumlahSoal") || (typeof JUMLAH_SOAL_DEFAULT !== "undefined" ? JUMLAH_SOAL_DEFAULT : ' + configJumlahSoal + '));',
+    'let configAcak = localStorage.getItem("configAcak") !== null ? localStorage.getItem("configAcak") === "true" : (typeof ACAK_DEFAULT !== "undefined" ? ACAK_DEFAULT : ' + configAcak + ');',
+    'let configAcakOpsi = localStorage.getItem("configAcakOpsi") !== null ? localStorage.getItem("configAcakOpsi") === "true" : (typeof ACAK_OPSI_DEFAULT !== "undefined" ? ACAK_OPSI_DEFAULT : ' + configAcakOpsi + ');',
+    'let configEnableReset = localStorage.getItem("configEnableReset") !== null ? localStorage.getItem("configEnableReset") === "true" : (typeof ENABLE_RESET_DEFAULT !== "undefined" ? ENABLE_RESET_DEFAULT : ' + configEnableReset + ');',
+    'let configAutoSaveHTML = localStorage.getItem("configAutoSaveHTML") !== null ? localStorage.getItem("configAutoSaveHTML") === "true" : (typeof AUTO_SAVE_HTML_DEFAULT !== "undefined" ? AUTO_SAVE_HTML_DEFAULT : ' + configAutoSaveHTML + ');',
+    'let configMaxPelanggaran = parseInt(localStorage.getItem("configMaxPelanggaran") || (typeof MAX_PELANGGARAN_DEFAULT !== "undefined" ? MAX_PELANGGARAN_DEFAULT : ' + configMaxPelanggaran + '));',
+    'let configNilaiMaksimal = parseInt(localStorage.getItem("configNilaiMaksimal") || (typeof NILAI_MAKSIMAL_DEFAULT !== "undefined" ? NILAI_MAKSIMAL_DEFAULT : ' + configNilaiMaksimal + '));',
+    'let configNilaiKKM = parseInt(localStorage.getItem("configNilaiKKM") || (typeof NILAI_KKM_DEFAULT !== "undefined" ? NILAI_KKM_DEFAULT : ' + configNilaiKKM + '));',
+    'let configTampilNilai = localStorage.getItem("configTampilNilai") !== null ? localStorage.getItem("configTampilNilai") !== "false" : (typeof TAMPIL_NILAI_DEFAULT !== "undefined" ? TAMPIL_NILAI_DEFAULT : ' + configTampilNilai + ');',
+    'let configGithubToken = localStorage.getItem("configGithubToken") || (typeof GITHUB_TOKEN_DEFAULT !== "undefined" ? GITHUB_TOKEN_DEFAULT : ' + JSON.stringify(configGithubToken) + ');',
+    'let configGithubOwner = localStorage.getItem("configGithubOwner") || (typeof GITHUB_OWNER_DEFAULT !== "undefined" ? GITHUB_OWNER_DEFAULT : ' + JSON.stringify(configGithubOwner) + ');',
+    'let configGithubRepo = localStorage.getItem("configGithubRepo") || (typeof GITHUB_REPO_DEFAULT !== "undefined" ? GITHUB_REPO_DEFAULT : ' + JSON.stringify(configGithubRepo) + ');',
+    'let configGithubPath = localStorage.getItem("configGithubPath") || (typeof GITHUB_PATH_DEFAULT !== "undefined" ? GITHUB_PATH_DEFAULT : ' + JSON.stringify(configGithubPath) + ');',
+    'let configGithubBranch = localStorage.getItem("configGithubBranch") || (typeof GITHUB_BRANCH_DEFAULT !== "undefined" ? GITHUB_BRANCH_DEFAULT : ' + JSON.stringify(configGithubBranch) + ');',
+    'let configAutoPushGithub = localStorage.getItem("configAutoPushGithub") !== null ? localStorage.getItem("configAutoPushGithub") === "true" : (typeof AUTO_PUSH_GITHUB_DEFAULT !== "undefined" ? AUTO_PUSH_GITHUB_DEFAULT : ' + configAutoPushGithub + ');',
+    '// __RUNTIME_CONFIG_END__'
+  ];
+  const newRuntimeConfigBlock = newRuntimeLines.join('\n');
+
+  htmlText = htmlText.replace(/\/\/ __CONFIG_START__[\s\S]*?\/\/ __CONFIG_END__/, () => newConfigBlock);
+  htmlText = htmlText.replace(/\/\/ __RUNTIME_CONFIG_START__[\s\S]*?\/\/ __RUNTIME_CONFIG_END__/, () => newRuntimeConfigBlock);
+  htmlText = htmlText.replace(/const HTML_VERSION = "[^"]*";/, 'const HTML_VERSION = "' + newVersion + '";');
+
+  const versionBadges = document.querySelectorAll('#versionBadge, #currentVersionDisplay');
+  versionBadges.forEach(el => el.innerText = 'v' + newVersion);
+
+  return { html: htmlText, newVersion };
+}
+
+let isSyncingGithub = false;
+
+async function prosesAntreanGithub() {
+  if (isSyncingGithub) return;
+  if (localStorage.getItem('pendingGithubSync') !== 'true') return;
+  if (!configGithubToken || !configGithubOwner || !configGithubRepo) return;
+  await syncKeGitHub(true);
+}
+
+async function syncKeGitHub(isAutoSync = false) {
+  const token = configGithubToken.trim();
+  const owner = configGithubOwner.trim();
+  const repo = configGithubRepo.trim();
+  const path = (configGithubPath.trim() || 'index.html').replace(/^\//, '');
+  const branch = configGithubBranch.trim() || 'main';
+
+  const statusElem = document.getElementById('statusGithubSync');
+
+  if (!token || !owner || !repo) {
+    if (!isAutoSync && statusElem) {
+      statusElem.innerHTML = '<div class="alert-error">❌ Token, Owner, dan Nama Repo GitHub harus diisi terlebih dahulu!</div>';
+    }
+    return false;
+  }
+
+  // Tandai antrean sinkronisasi
+  localStorage.setItem('pendingGithubSync', 'true');
+
+  if (!navigator.onLine) {
+    if (statusElem) {
+      statusElem.innerHTML = '<div class="alert-info">📡 <strong>Perangkat OFFLINE:</strong> Semua perubahan disimpan lokal di browser. Sinkronisasi ke GitHub akan berjalan otomatis saat terhubung kembali ke internet.</div>';
+    }
+    return false;
+  }
+
+  if (isSyncingGithub) return false;
+  isSyncingGithub = true;
+
+  if (statusElem) {
+    statusElem.innerHTML = '<div class="alert-info">⏳ Sedang menghubungkan & mengunggah perubahan ke GitHub...</div>';
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const getUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path + '?ref=' + branch;
+    const getRes = await fetch(getUrl, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      signal: controller.signal
+    });
+
+    let sha = null;
+    if (getRes.ok) {
+      const fileData = await getRes.json();
+      sha = fileData.sha;
+    } else if (getRes.status !== 404) {
+      const errData = await getRes.json().catch(() => ({}));
+      throw new Error(errData.message || ('Gagal mengambil informasi file dari GitHub (Status: ' + getRes.status + ')'));
+    }
+
+    const { html, newVersion } = dapatkanGeneratedHtml();
+    const contentBase64 = encodeUtf8ToBase64(html);
+
+    const putUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path;
+    const commitMessage = 'Auto-update ' + path + ' v' + newVersion + ' via Evaluasi PKK App';
+
+    const bodyData = {
+      message: commitMessage,
+      content: contentBase64,
+      branch: branch
+    };
+    if (sha) bodyData.sha = sha;
+
+    const putRes = await fetch(putUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bodyData),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!putRes.ok) {
+      const errData = await putRes.json().catch(() => ({}));
+      throw new Error(errData.message || ('Gagal commit/push ke GitHub (Status: ' + putRes.status + ')'));
+    }
+
+    const resData = await putRes.json();
+    const commitUrl = resData.commit ? resData.commit.html_url : '#';
+
+    // Berhasil sync, hapus penanda antrean
+    localStorage.removeItem('pendingGithubSync');
+
+    if (statusElem) {
+      statusElem.innerHTML = '<div class="alert-success">✅ <strong>BERHASIL DISINKRONKAN KE GITHUB!</strong><br>File HTML di repo <strong>' + owner + '/' + repo + '</strong> berhasil ter-update (v' + newVersion + ').<br>🌐 Perubahan akan tampil di GitHub Pages secara otomatis tanpa download HTML.<br><a href="' + commitUrl + '" target="_blank" style="color:var(--accent-blue); font-weight:bold;">🔗 Lihat Commit GitHub</a></div>';
+    }
+    return true;
+  } catch (err) {
+    clearTimeout(timeoutId);
+    console.error('Error Sync GitHub:', err);
+    if (statusElem) {
+      statusElem.innerHTML = '<div class="alert-info">📡 <strong>Sinkronisasi tertunda (koneksi offline/terputus):</strong> Semua perubahan telah aman tersimpan di browser &amp; akan otomatis di-sync begitu koneksi internet stabil. <button onclick="prosesAntreanGithub()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Lagi</button></div>';
+    }
+    return false;
+  } finally {
+    isSyncingGithub = false;
+  }
+}
+
+function syncKeGitHubManually() {
+  simpanSemuaPengaturan();
+  syncKeGitHub(false);
+}
+
+async function tesKoneksiGithub() {
+  const token = document.getElementById('inputGithubToken').value.trim();
+  const owner = document.getElementById('inputGithubOwner').value.trim();
+  const repo = document.getElementById('inputGithubRepo').value.trim();
+  const statusElem = document.getElementById('statusGithubSync');
+
+  if (!token || !owner || !repo) {
+    statusElem.innerHTML = '<div class="alert-error">❌ Isi Token, Owner, dan Repo untuk mengetes koneksi!</div>';
+    return;
+  }
+
+  statusElem.innerHTML = '<div class="alert-info">⏳ Memeriksa koneksi ke GitHub Repository...</div>';
+
+  try {
+    const res = await fetch('https://api.github.com/repos/' + owner + '/' + repo, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      statusElem.innerHTML = '<div class="alert-success">✅ Koneksi Berhasil! Repositori <strong>' + data.full_name + '</strong> ditemukan dan token valid.</div>';
+    } else {
+      const err = await res.json().catch(() => ({}));
+      statusElem.innerHTML = '<div class="alert-error">❌ Gagal terhubung ke GitHub: ' + (err.message || ('Status ' + res.status)) + '</div>';
+    }
+  } catch (err) {
+    statusElem.innerHTML = '<div class="alert-error">❌ Error koneksi: ' + err.message + '</div>';
+  }
+}
+
+function updateStatusAutoSaveHTML() {
+  const status = document.getElementById('statusAutoSaveHTML');
+  if (!status) return;
+  if (configAutoSaveHTML) {
+    status.innerText = 'AKTIF';
+    status.className = 'status-badge status-on';
+  } else {
+    status.innerText = 'NONAKTIF';
+    status.className = 'status-badge status-off';
+  }
 }
 
 function simpanPengaturanNilai() {
@@ -806,6 +1243,7 @@ function simpanPengaturanNilai() {
   localStorage.setItem('configTampilNilai', configTampilNilai);
 
   document.getElementById('statusPengaturanNilai').innerHTML = '<div class="alert-success">✅ Pengaturan Score berhasil disimpan! Maksimal: <strong>' + configNilaiMaksimal + '</strong>, KKM: <strong>' + configNilaiKKM + '</strong>, Tampilkan: <strong>' + (configTampilNilai ? 'Ya' : 'Tidak') + '</strong></div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function resetPengaturanNilai() {
@@ -822,6 +1260,7 @@ function resetPengaturanNilai() {
   document.getElementById('selectTampilNilai').value = "true";
 
   document.getElementById('statusPengaturanNilai').innerHTML = '<div class="alert-success">✅ Pengaturan score direset ke default (Maksimal: 100, KKM: 75, Tampilkan: Ya).</div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function salinKodeGas() {
@@ -845,7 +1284,8 @@ function simpanGoogleSheet() {
   const url = document.getElementById('inputGoogleSheet').value.trim();
   configGoogleSheetUrl = url;
   localStorage.setItem('configGoogleSheetUrl', configGoogleSheetUrl);
-  document.getElementById('statusGoogleSheet').innerHTML = '<div class="alert-success">✅ URL Google Apps Script berhasil disimpan di perangkat ini!<br>📌 <strong>PENTING:</strong> Klik tombol <strong>"💾 Download HTML Terbaru"</strong> di bawah lalu ganti file di GitHub Pages/hosting Anda agar URL otomatis terpasang di seluruh HP/perangkat siswa tanpa perlu copy-paste lagi.</div>';
+  document.getElementById('statusGoogleSheet').innerHTML = '<div class="alert-success">✅ URL Google Apps Script berhasil disimpan di perangkat ini!</div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function resetGoogleSheet() {
@@ -854,6 +1294,7 @@ function resetGoogleSheet() {
   localStorage.setItem('configGoogleSheetUrl', '');
   document.getElementById('inputGoogleSheet').value = '';
   document.getElementById('statusGoogleSheet').innerHTML = '<div class="alert-info">ℹ️ URL Google Apps Script dikosongkan.</div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function tesKirimGoogleSheet() {
@@ -889,7 +1330,8 @@ function simpanJudul() {
   configJudul = judul; configSubJudul = subJudul; configToken = token;
   localStorage.setItem('configJudul', configJudul); localStorage.setItem('configSubJudul', configSubJudul); localStorage.setItem('configToken', configToken);
   updateJudulDiSemuaTempat();
-  document.getElementById('statusJudul').innerHTML = '<div class="alert-success">✅ Berhasil disimpan. Klik "Download HTML Terbaru" di Panel 9!</div>';
+  document.getElementById('statusJudul').innerHTML = '<div class="alert-success">✅ Berhasil disimpan!</div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function resetJudul() {
@@ -899,6 +1341,7 @@ function resetJudul() {
   document.getElementById('inputJudul').value = configJudul; document.getElementById('inputSubJudul').value = configSubJudul; document.getElementById('inputToken').value = configToken;
   updateJudulDiSemuaTempat();
   document.getElementById('statusJudul').innerHTML = '<div class="alert-success">✅ Direset ke default</div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function togglePwd(inputId) { const input = document.getElementById(inputId); input.type = input.type === 'password' ? 'text' : 'password'; }
@@ -924,6 +1367,7 @@ function ubahPassword() {
   document.getElementById('pwdLama').value = ''; document.getElementById('pwdBaru').value = ''; document.getElementById('pwdKonfirmasi').value = '';
   document.getElementById('pwdStrength').innerHTML = ''; updatePasswordDisplay();
   document.getElementById('statusPassword').innerHTML = '<div class="alert-success">✅ Password berhasil diubah!</div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function resetPasswordDefault() {
@@ -932,6 +1376,7 @@ function resetPasswordDefault() {
   document.getElementById('pwdLama').value = ''; document.getElementById('pwdBaru').value = ''; document.getElementById('pwdKonfirmasi').value = '';
   updatePasswordDisplay();
   document.getElementById('statusPassword').innerHTML = '<div class="alert-success">✅ Password direset ke: <strong>guru123</strong></div>';
+  triggerAutoSavePermanentHTML();
 }
 
 function simpanWaktu() {
@@ -940,6 +1385,7 @@ function simpanWaktu() {
   configDurasi = waktu; localStorage.setItem('configDurasi', configDurasi);
   document.getElementById('statusWaktu').innerHTML = '<div class="alert-success">✅ Waktu disimpan: <strong>' + configDurasi + ' menit</strong></div>';
   updateInfoWaktu();
+  triggerAutoSavePermanentHTML();
 }
 
 function simpanJumlahSoal() {
@@ -948,6 +1394,7 @@ function simpanJumlahSoal() {
   configJumlahSoal = jml; localStorage.setItem('configJumlahSoal', configJumlahSoal);
   document.getElementById('statusWaktu').innerHTML = '<div class="alert-success">✅ Jumlah soal: <strong>' + (configJumlahSoal === 0 ? 'Semua' : configJumlahSoal) + '</strong></div>';
   updateInfoWaktu();
+  triggerAutoSavePermanentHTML();
 }
 
 function updateInfoWaktu() {
@@ -985,6 +1432,7 @@ function importExcel(event) {
       soalAktif = soalBaru; localStorage.setItem('soalAktif', JSON.stringify(soalBaru));
       document.getElementById('statusImport').innerHTML = '<div class="alert-success">✅ Berhasil import <strong>' + soalBaru.length + ' soal</strong>.</div>';
       document.getElementById('jumlahSoalSaatIni').innerText = soalAktif.length; tampilkanPreview(soalBaru);
+      triggerAutoSavePermanentHTML();
     } catch (err) { document.getElementById('statusImport').innerHTML = '<div class="alert-error">❌ Error: ' + err.message + '</div>'; }
     finally { if (inputElement) inputElement.value = ''; }
   };
@@ -1011,19 +1459,20 @@ function resetSoalDefault() {
   document.getElementById('jumlahSoalSaatIni').innerText = soalAktif.length;
   document.getElementById('previewSoal').innerHTML = '';
   document.getElementById('statusImport').innerHTML = '<div class="alert-success">✅ Soal direset ke default</div>';
+  triggerAutoSavePermanentHTML();
 }
 
-function simpanAcak() { configAcak = document.getElementById('toggleAcak').checked; localStorage.setItem('configAcak', configAcak); updateStatusAcak(); }
-function simpanAcakOpsi() { configAcakOpsi = document.getElementById('toggleAcakOpsi').checked; localStorage.setItem('configAcakOpsi', configAcakOpsi); updateStatusAcakOpsi(); }
-function simpanEnableReset() { configEnableReset = document.getElementById('toggleEnableReset').checked; localStorage.setItem('configEnableReset', configEnableReset); updateStatusEnableReset(); updateResetButtonVisibility(); }
+function simpanAcak() { configAcak = document.getElementById('toggleAcak').checked; localStorage.setItem('configAcak', configAcak); updateStatusAcak(); triggerAutoSavePermanentHTML(); }
+function simpanAcakOpsi() { configAcakOpsi = document.getElementById('toggleAcakOpsi').checked; localStorage.setItem('configAcakOpsi', configAcakOpsi); updateStatusAcakOpsi(); triggerAutoSavePermanentHTML(); }
+function simpanEnableReset() { configEnableReset = document.getElementById('toggleEnableReset').checked; localStorage.setItem('configEnableReset', configEnableReset); updateStatusEnableReset(); updateResetButtonVisibility(); triggerAutoSavePermanentHTML(); }
 function updateStatusAcak() { const status = document.getElementById('statusAcak'); if (configAcak) { status.innerText = 'AKTIF'; status.className = 'status-badge status-on'; } else { status.innerText = 'NONAKTIF'; status.className = 'status-badge status-off'; } }
 function updateStatusAcakOpsi() { const status = document.getElementById('statusAcakOpsi'); if (configAcakOpsi) { status.innerText = 'AKTIF'; status.className = 'status-badge status-on'; } else { status.innerText = 'NONAKTIF'; status.className = 'status-badge status-off'; } }
 function updateStatusEnableReset() { const status = document.getElementById('statusEnableReset'); if (!status) return; if (configEnableReset) { status.innerText = 'AKTIF (Latihan)'; status.className = 'status-badge status-on'; } else { status.innerText = 'NONAKTIF (Mode UJIAN)'; status.className = 'status-badge status-off'; } }
-function updateResetButtonVisibility() { const btn = document.getElementById('btnResetMenuAwal'); if (!btn) return; btn.style.display = configEnableReset ? 'inline-flex' : 'none'; }
+function updateResetButtonVisibility() { const btn = document.getElementById('btnResetMenuAwal'); if (!btn) return; btn.style.display = configEnableReset ? 'flex' : 'none'; }
 function resetSoalMenuAwal() {
   if (configEnableReset) {
     if (confirm('Yakin ingin mereset/mengulang latihan soal? Semua data pengerjaan sebelumnya akan dibersihkan.')) {
-      ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k));
+      ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSubmissionSent'].forEach(k => localStorage.removeItem(k));
       statusUjian = null; dataSiswa = null; jawaban = {}; pelanggaran = []; jumlahPelanggaran = 0;
       alert('✅ Latihan soal berhasil direset! Silakan mulai ujian/latihan kembali.');
       location.reload();
@@ -1045,6 +1494,7 @@ function simpanMaxPelanggaran() {
   configMaxPelanggaran = max; localStorage.setItem('configMaxPelanggaran', configMaxPelanggaran);
   document.getElementById('statusMaxPelanggaran').innerHTML = '<div class="alert-success">✅ Batas pelanggaran disimpan: <strong>' + configMaxPelanggaran + ' kali</strong>.</div>';
   updateInfoWaktu();
+  triggerAutoSavePermanentHTML();
 }
 
 function resetMaxPelanggaran() {
@@ -1052,6 +1502,7 @@ function resetMaxPelanggaran() {
   document.getElementById('inputMaxPelanggaran').value = 5;
   document.getElementById('statusMaxPelanggaran').innerHTML = '<div class="alert-success">✅ Batas pelanggaran direset ke: <strong>5 kali</strong></div>';
   updateInfoWaktu();
+  triggerAutoSavePermanentHTML();
 }
 
 function getPengaturanCetak() {
@@ -1067,36 +1518,16 @@ function getPengaturanCetak() {
 }
 
 function resetPengaturanCetak() {
-  configCetakFont = "'Times New Roman', serif";
-  configCetakKertas = "F4";
-  configCetakUkuranFont = "12";
-  configCetakSpasi = "1";
-  configCetakMarginAtas = "1.5";
-  configCetakMarginBawah = "1.5";
-  configCetakMarginKiri = "1.5";
-  configCetakMarginKanan = "1.5";
-  configCetakKunci = "akhir";
-  configCetakAcak = "tidak";
-  localStorage.setItem('configCetakFont', configCetakFont);
-  localStorage.setItem('configCetakKertas', configCetakKertas);
-  localStorage.setItem('configCetakUkuranFont', configCetakUkuranFont);
-  localStorage.setItem('configCetakSpasi', configCetakSpasi);
-  localStorage.setItem('configCetakMarginAtas', configCetakMarginAtas);
-  localStorage.setItem('configCetakMarginBawah', configCetakMarginBawah);
-  localStorage.setItem('configCetakMarginKiri', configCetakMarginKiri);
-  localStorage.setItem('configCetakMarginKanan', configCetakMarginKanan);
-  localStorage.setItem('configCetakKunci', configCetakKunci);
-  localStorage.setItem('configCetakAcak', configCetakAcak);
-  document.getElementById('cetakFont').value = configCetakFont;
-  document.getElementById('cetakKertas').value = configCetakKertas;
-  document.getElementById('cetakUkuranFont').value = configCetakUkuranFont;
-  document.getElementById('cetakSpasi').value = configCetakSpasi;
-  document.getElementById('cetakMarginAtas').value = configCetakMarginAtas;
-  document.getElementById('cetakMarginBawah').value = configCetakMarginBawah;
-  document.getElementById('cetakMarginKiri').value = configCetakMarginKiri;
-  document.getElementById('cetakMarginKanan').value = configCetakMarginKanan;
-  document.getElementById('cetakKunci').value = configCetakKunci;
-  document.getElementById('cetakAcak').value = configCetakAcak;
+  document.getElementById('cetakFont').value = "'Times New Roman', serif";
+  document.getElementById('cetakKertas').value = "F4";
+  document.getElementById('cetakUkuranFont').value = "12";
+  document.getElementById('cetakSpasi').value = "1";
+  document.getElementById('cetakMarginAtas').value = "1.5";
+  document.getElementById('cetakMarginBawah').value = "1.5";
+  document.getElementById('cetakMarginKiri').value = "1.5";
+  document.getElementById('cetakMarginKanan').value = "1.5";
+  document.getElementById('cetakKunci').value = "akhir";
+  document.getElementById('cetakAcak').value = "tidak";
   document.getElementById('previewCetakArea').innerHTML = '';
 }
 
@@ -1242,14 +1673,14 @@ function exportToExcel() {
 
 function resetDataSiswa() {
   if (!confirm('Yakin ingin menghapus semua data siswa?')) return;
-  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k));
+  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSubmissionSent'].forEach(k => localStorage.removeItem(k));
   document.getElementById('statusResetSiswa').innerHTML = '<div class="alert-success">✅ Semua data siswa berhasil dihapus</div>';
   setTimeout(() => { document.getElementById('statusResetSiswa').innerHTML = ''; }, 3000);
 }
 
 function hapusDataTerEmbed() {
   if (!confirm('Yakin ingin menghapus semua data ter-embed dan data siswa? Semua bekas data ujian akan dibersihkan.')) return;
-  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k));
+  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSubmissionSent'].forEach(k => localStorage.removeItem(k));
   statusUjian = null; dataSiswa = null; jawaban = {}; pelanggaran = []; jumlahPelanggaran = 0; soalUrutan = []; urutanOpsiPerSoal = {}; waktuJawaban = {};
   ['nama','nomor','kelas','tokenUjian'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   ['soalContainer','resultArea','watermarkOverlay'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
@@ -1297,10 +1728,12 @@ function simpanSemuaPengaturan() {
     configAcak = document.getElementById('toggleAcak').checked;
     configAcakOpsi = document.getElementById('toggleAcakOpsi').checked;
     configEnableReset = document.getElementById('toggleEnableReset').checked;
+    configAutoSaveHTML = document.getElementById('toggleAutoSaveHTML').checked;
     localStorage.setItem('configAcak', configAcak);
     localStorage.setItem('configAcakOpsi', configAcakOpsi);
     localStorage.setItem('configEnableReset', configEnableReset);
-    updateStatusAcak(); updateStatusAcakOpsi(); updateStatusEnableReset(); updateResetButtonVisibility();
+    localStorage.setItem('configAutoSaveHTML', configAutoSaveHTML);
+    updateStatusAcak(); updateStatusAcakOpsi(); updateStatusEnableReset(); updateStatusAutoSaveHTML(); updateResetButtonVisibility();
 
     const maxScore = parseInt(document.getElementById('inputNilaiMaksimal').value);
     const kkm = parseInt(document.getElementById('inputNilaiKKM').value);
@@ -1318,29 +1751,6 @@ function simpanSemuaPengaturan() {
     if (!isNaN(maxPel) && maxPel >= 1 && maxPel <= 20) {
       configMaxPelanggaran = maxPel;
       localStorage.setItem('configMaxPelanggaran', configMaxPelanggaran);
-    }
-
-    if (document.getElementById('cetakFont')) {
-      configCetakFont = document.getElementById('cetakFont').value;
-      configCetakKertas = document.getElementById('cetakKertas').value;
-      configCetakUkuranFont = document.getElementById('cetakUkuranFont').value;
-      configCetakSpasi = document.getElementById('cetakSpasi').value;
-      configCetakMarginAtas = document.getElementById('cetakMarginAtas').value;
-      configCetakMarginBawah = document.getElementById('cetakMarginBawah').value;
-      configCetakMarginKiri = document.getElementById('cetakMarginKiri').value;
-      configCetakMarginKanan = document.getElementById('cetakMarginKanan').value;
-      configCetakKunci = document.getElementById('cetakKunci').value;
-      configCetakAcak = document.getElementById('cetakAcak').value;
-      localStorage.setItem('configCetakFont', configCetakFont);
-      localStorage.setItem('configCetakKertas', configCetakKertas);
-      localStorage.setItem('configCetakUkuranFont', configCetakUkuranFont);
-      localStorage.setItem('configCetakSpasi', configCetakSpasi);
-      localStorage.setItem('configCetakMarginAtas', configCetakMarginAtas);
-      localStorage.setItem('configCetakMarginBawah', configCetakMarginBawah);
-      localStorage.setItem('configCetakMarginKiri', configCetakMarginKiri);
-      localStorage.setItem('configCetakMarginKanan', configCetakMarginKanan);
-      localStorage.setItem('configCetakKunci', configCetakKunci);
-      localStorage.setItem('configCetakAcak', configCetakAcak);
     }
 
     const sheetUrl = document.getElementById('inputGoogleSheet').value.trim();
@@ -1363,7 +1773,10 @@ function simpanSemuaPengaturan() {
 
     const statusElem = document.getElementById('statusSimpanSemua');
     if (statusElem) {
-      statusElem.innerHTML = '<div class="alert-success">✅ <strong>SEMUA PENGATURAN BERHASIL DISIMPAN!</strong><br>Seluruh perubahan telah tersimpan di browser Anda.<br>📌 Klik <strong>"Download HTML Terbaru"</strong> jika ingin membagikan file HTML terkini ke siswa.</div>';
+      statusElem.innerHTML = '<div class="alert-success">✅ <strong>SEMUA PENGATURAN BERHASIL DISIMPAN!</strong><br>Seluruh perubahan telah tersimpan di browser Anda.' + (configAutoPushGithub ? '<br>⚡ Mengunggah perubahan otomatis ke GitHub...' : '<br>📌 Klik <strong>"Download HTML Terbaru"</strong> jika ingin membagikan file HTML terkini ke siswa.') + '</div>';
+    }
+    if (configAutoPushGithub) {
+      syncKeGitHub(true);
     }
   } catch (err) {
     const statusElem = document.getElementById('statusSimpanSemua');
@@ -1375,60 +1788,135 @@ function simpanSemuaPengaturan() {
 
 function incrementVersion(v) { const parts = v.split('.').map(Number); parts[parts.length - 1]++; return parts.join('.'); }
 
-function simpanPermanenKeHTML() {
-  simpanSemuaPengaturan();
-  if (!confirm('File HTML baru akan didownload dengan semua perubahan saat ini.\n\nSetelah download, ganti file HTML lama di hosting dengan file baru ini.\n\nLanjutkan?')) return;
+function simpanPermanenKeHTML(isAutoSave = false) {
+  if (!isAutoSave) {
+    simpanSemuaPengaturan();
+    if (!confirm('File HTML baru akan didownload dengan semua perubahan saat ini.\n\nSetelah download, ganti file HTML lama di hosting dengan file baru ini.\n\nLanjutkan?')) return;
+  }
   try {
-    const savedState = { menuAwal: document.getElementById('menuAwal').style.display, identityForm: document.getElementById('identityForm').style.display, dashboardGuru: document.getElementById('dashboardGuru').style.display, quizArea: document.getElementById('quizArea').style.display, resultArea: document.getElementById('resultArea').style.display, loginModal: document.getElementById('loginModal').style.display, resetModal: document.getElementById('resetModal').style.display, violationOverlay: document.getElementById('violationOverlay').style.display };
-    document.getElementById('menuAwal').style.display = 'block'; document.getElementById('identityForm').style.display = 'none'; document.getElementById('dashboardGuru').style.display = 'none'; document.getElementById('quizArea').style.display = 'none'; document.getElementById('resultArea').style.display = 'none'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('resetModal').style.display = 'none'; document.getElementById('violationOverlay').style.display = 'none';
-    ['statusJudul','statusPassword','statusWaktu','statusImport','statusPengaturanNilai','statusMaxPelanggaran','statusGoogleSheet','statusResetSiswa','statusSimpanPermanen','statusSimpanSemua'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
-    let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-    document.getElementById('menuAwal').style.display = savedState.menuAwal; document.getElementById('identityForm').style.display = savedState.identityForm; document.getElementById('dashboardGuru').style.display = savedState.dashboardGuru; document.getElementById('quizArea').style.display = savedState.quizArea; document.getElementById('resultArea').style.display = savedState.resultArea; document.getElementById('loginModal').style.display = savedState.loginModal; document.getElementById('resetModal').style.display = savedState.resetModal; document.getElementById('violationOverlay').style.display = savedState.violationOverlay;
+    const savedState = {
+      menuAwal: document.getElementById('menuAwal').style.display,
+      identityForm: document.getElementById('identityForm').style.display,
+      dashboardGuru: document.getElementById('dashboardGuru').style.display,
+      quizArea: document.getElementById('quizArea').style.display,
+      resultArea: document.getElementById('resultArea').style.display,
+      loginModal: document.getElementById('loginModal').style.display,
+      resetModal: document.getElementById('resetModal').style.display,
+      violationOverlay: document.getElementById('violationOverlay').style.display
+    };
+
+    document.getElementById('menuAwal').style.display = 'block';
+    document.getElementById('identityForm').style.display = 'none';
+    document.getElementById('dashboardGuru').style.display = 'none';
+    document.getElementById('quizArea').style.display = 'none';
+    document.getElementById('resultArea').style.display = 'none';
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('resetModal').style.display = 'none';
+    document.getElementById('violationOverlay').style.display = 'none';
+
+    ['statusJudul','statusPassword','statusWaktu','statusImport','statusPengaturanNilai','statusMaxPelanggaran','statusGoogleSheet','statusResetSiswa','statusSimpanPermanen','statusSimpanSemua','statusGithubSync'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '';
+    });
+
+    let htmlText = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+    document.getElementById('menuAwal').style.display = savedState.menuAwal;
+    document.getElementById('identityForm').style.display = savedState.identityForm;
+    document.getElementById('dashboardGuru').style.display = savedState.dashboardGuru;
+    document.getElementById('quizArea').style.display = savedState.quizArea;
+    document.getElementById('resultArea').style.display = savedState.resultArea;
+    document.getElementById('loginModal').style.display = savedState.loginModal;
+    document.getElementById('resetModal').style.display = savedState.resetModal;
+    document.getElementById('violationOverlay').style.display = savedState.violationOverlay;
+
     const newVersion = incrementVersion(HTML_VERSION);
     localStorage.setItem('htmlVersion', newVersion);
-    const syncInputValue = (id, val) => { const el = document.getElementById(id); if (el) { el.value = val; el.setAttribute('value', val); } };
-    const syncCheckbox = (id, checked) => { const el = document.getElementById(id); if (el) { el.checked = checked; if (checked) el.setAttribute('checked', 'checked'); else el.removeAttribute('checked'); } };
-    const syncSelect = (id, val) => { const el = document.getElementById(id); if (el) { el.value = val; Array.from(el.options).forEach(opt => { if (opt.value === String(val)) opt.setAttribute('selected', 'selected'); else opt.removeAttribute('selected'); }); } };
 
-    syncInputValue('inputJudul', configJudul);
-    syncInputValue('inputSubJudul', configSubJudul);
-    syncInputValue('inputToken', configToken);
-    syncInputValue('inputWaktu', configDurasi);
-    syncInputValue('inputJumlahSoal', configJumlahSoal);
-    syncCheckbox('toggleAcak', configAcak);
-    syncCheckbox('toggleAcakOpsi', configAcakOpsi);
-    syncCheckbox('toggleEnableReset', configEnableReset);
-    syncInputValue('inputNilaiMaksimal', configNilaiMaksimal);
-    syncInputValue('inputNilaiKKM', configNilaiKKM);
-    syncSelect('selectTampilNilai', configTampilNilai ? "true" : "false");
-    syncInputValue('inputMaxPelanggaran', configMaxPelanggaran);
-    syncInputValue('inputGoogleSheet', configGoogleSheetUrl);
-    syncSelect('cetakFont', configCetakFont);
-    syncSelect('cetakKertas', configCetakKertas);
-    syncSelect('cetakUkuranFont', configCetakUkuranFont);
-    syncSelect('cetakSpasi', configCetakSpasi);
-    syncInputValue('cetakMarginAtas', configCetakMarginAtas);
-    syncInputValue('cetakMarginBawah', configCetakMarginBawah);
-    syncInputValue('cetakMarginKiri', configCetakMarginKiri);
-    syncInputValue('cetakMarginKanan', configCetakMarginKanan);
-    syncSelect('cetakKunci', configCetakKunci);
-    syncSelect('cetakAcak', configCetakAcak);
+    const newConfigLines = [
+      '// __CONFIG_START__',
+      'const JUDUL_DEFAULT = ' + JSON.stringify(configJudul) + ';',
+      'const SUBJUDUL_DEFAULT = ' + JSON.stringify(configSubJudul) + ';',
+      'const PASSWORD_DEFAULT = ' + JSON.stringify(PASSWORD_GURU) + ';',
+      'const TOKEN_DEFAULT = ' + JSON.stringify(configToken) + ';',
+      'const GOOGLE_SHEET_URL_DEFAULT = ' + JSON.stringify(configGoogleSheetUrl) + ';',
+      'const DURASI_DEFAULT = ' + JSON.stringify(configDurasi) + ';',
+      'const JUMLAH_SOAL_DEFAULT = ' + JSON.stringify(configJumlahSoal) + ';',
+      'const ACAK_DEFAULT = ' + JSON.stringify(configAcak) + ';',
+      'const ACAK_OPSI_DEFAULT = ' + JSON.stringify(configAcakOpsi) + ';',
+      'const ENABLE_RESET_DEFAULT = ' + JSON.stringify(configEnableReset) + ';',
+      'const AUTO_SAVE_HTML_DEFAULT = ' + JSON.stringify(configAutoSaveHTML) + ';',
+      'const MAX_PELANGGARAN_DEFAULT = ' + JSON.stringify(configMaxPelanggaran) + ';',
+      'const NILAI_MAKSIMAL_DEFAULT = ' + JSON.stringify(configNilaiMaksimal) + ';',
+      'const NILAI_KKM_DEFAULT = ' + JSON.stringify(configNilaiKKM) + ';',
+      'const TAMPIL_NILAI_DEFAULT = ' + JSON.stringify(configTampilNilai) + ';',
+      'const GITHUB_TOKEN_DEFAULT = ' + JSON.stringify(configGithubToken) + ';',
+      'const GITHUB_OWNER_DEFAULT = ' + JSON.stringify(configGithubOwner) + ';',
+      'const GITHUB_REPO_DEFAULT = ' + JSON.stringify(configGithubRepo) + ';',
+      'const GITHUB_PATH_DEFAULT = ' + JSON.stringify(configGithubPath) + ';',
+      'const GITHUB_BRANCH_DEFAULT = ' + JSON.stringify(configGithubBranch) + ';',
+      'const AUTO_PUSH_GITHUB_DEFAULT = ' + JSON.stringify(configAutoPushGithub) + ';',
+      'const SOAL_DEFAULT = ' + JSON.stringify(soalAktif) + ';',
+      '// __CONFIG_END__'
+    ];
+    const newConfigBlock = newConfigLines.join('\n');
 
-    const newConfigBlock = '// __CONFIG_START__\nconst JUDUL_DEFAULT = ' + JSON.stringify(configJudul) + ';\nconst SUBJUDUL_DEFAULT = ' + JSON.stringify(configSubJudul) + ';\nconst PASSWORD_DEFAULT = ' + JSON.stringify(PASSWORD_GURU) + ';\nconst TOKEN_DEFAULT = ' + JSON.stringify(configToken) + ';\nconst GOOGLE_SHEET_URL_DEFAULT = ' + JSON.stringify(configGoogleSheetUrl) + ';\nconst DURASI_DEFAULT = ' + JSON.stringify(configDurasi) + ';\nconst JUMLAH_SOAL_DEFAULT = ' + JSON.stringify(configJumlahSoal) + ';\nconst ACAK_DEFAULT = ' + JSON.stringify(configAcak) + ';\nconst ACAK_OPSI_DEFAULT = ' + JSON.stringify(configAcakOpsi) + ';\nconst ENABLE_RESET_DEFAULT = ' + JSON.stringify(configEnableReset) + ';\nconst MAX_PELANGGARAN_DEFAULT = ' + JSON.stringify(configMaxPelanggaran) + ';\nconst NILAI_MAKSIMAL_DEFAULT = ' + JSON.stringify(configNilaiMaksimal) + ';\nconst NILAI_KKM_DEFAULT = ' + JSON.stringify(configNilaiKKM) + ';\nconst TAMPIL_NILAI_DEFAULT = ' + JSON.stringify(configTampilNilai) + ';\nconst CETAK_FONT_DEFAULT = ' + JSON.stringify(configCetakFont) + ';\nconst CETAK_KERTAS_DEFAULT = ' + JSON.stringify(configCetakKertas) + ';\nconst CETAK_UKURAN_FONT_DEFAULT = ' + JSON.stringify(configCetakUkuranFont) + ';\nconst CETAK_SPASI_DEFAULT = ' + JSON.stringify(configCetakSpasi) + ';\nconst CETAK_MARGIN_ATAS_DEFAULT = ' + JSON.stringify(configCetakMarginAtas) + ';\nconst CETAK_MARGIN_BAWAH_DEFAULT = ' + JSON.stringify(configCetakMarginBawah) + ';\nconst CETAK_MARGIN_KIRI_DEFAULT = ' + JSON.stringify(configCetakMarginKiri) + ';\nconst CETAK_MARGIN_KANAN_DEFAULT = ' + JSON.stringify(configCetakMarginKanan) + ';\nconst CETAK_KUNCI_DEFAULT = ' + JSON.stringify(configCetakKunci) + ';\nconst CETAK_ACAK_DEFAULT = ' + JSON.stringify(configCetakAcak) + ';\nconst SOAL_DEFAULT = ' + JSON.stringify(soalAktif) + ';\n// __CONFIG_END__';
-    const newRuntimeConfigBlock = '// __RUNTIME_CONFIG_START__\nlet configDurasi = parseInt(localStorage.getItem(\'configDurasi\') || (typeof DURASI_DEFAULT !== \'undefined\' ? DURASI_DEFAULT : ' + configDurasi + '));\nlet configJumlahSoal = parseInt(localStorage.getItem(\'configJumlahSoal\') || (typeof JUMLAH_SOAL_DEFAULT !== \'undefined\' ? JUMLAH_SOAL_DEFAULT : ' + configJumlahSoal + '));\nlet configAcak = localStorage.getItem(\'configAcak\') !== null ? localStorage.getItem(\'configAcak\') === \'true\' : (typeof ACAK_DEFAULT !== \'undefined\' ? ACAK_DEFAULT : ' + configAcak + ');\nlet configAcakOpsi = localStorage.getItem(\'configAcakOpsi\') !== null ? localStorage.getItem(\'configAcakOpsi\') === \'true\' : (typeof ACAK_OPSI_DEFAULT !== \'undefined\' ? ACAK_OPSI_DEFAULT : ' + configAcakOpsi + ');\nlet configEnableReset = localStorage.getItem(\'configEnableReset\') !== null ? localStorage.getItem(\'configEnableReset\') === \'true\' : (typeof ENABLE_RESET_DEFAULT !== \'undefined\' ? ENABLE_RESET_DEFAULT : ' + configEnableReset + ');\nlet configMaxPelanggaran = parseInt(localStorage.getItem(\'configMaxPelanggaran\') || (typeof MAX_PELANGGARAN_DEFAULT !== \'undefined\' ? MAX_PELANGGARAN_DEFAULT : ' + configMaxPelanggaran + '));\nlet configNilaiMaksimal = parseInt(localStorage.getItem(\'configNilaiMaksimal\') || (typeof NILAI_MAKSIMAL_DEFAULT !== \'undefined\' ? NILAI_MAKSIMAL_DEFAULT : ' + configNilaiMaksimal + '));\nlet configNilaiKKM = parseInt(localStorage.getItem(\'configNilaiKKM\') || (typeof NILAI_KKM_DEFAULT !== \'undefined\' ? NILAI_KKM_DEFAULT : ' + configNilaiKKM + '));\nlet configTampilNilai = localStorage.getItem(\'configTampilNilai\') !== null ? localStorage.getItem(\'configTampilNilai\') !== \'false\' : (typeof TAMPIL_NILAI_DEFAULT !== \'undefined\' ? TAMPIL_NILAI_DEFAULT : ' + configTampilNilai + ');\nlet configCetakFont = localStorage.getItem(\'configCetakFont\') || (typeof CETAK_FONT_DEFAULT !== \'undefined\' ? CETAK_FONT_DEFAULT : ' + JSON.stringify(configCetakFont) + ');\nlet configCetakKertas = localStorage.getItem(\'configCetakKertas\') || (typeof CETAK_KERTAS_DEFAULT !== \'undefined\' ? CETAK_KERTAS_DEFAULT : ' + JSON.stringify(configCetakKertas) + ');\nlet configCetakUkuranFont = localStorage.getItem(\'configCetakUkuranFont\') || (typeof CETAK_UKURAN_FONT_DEFAULT !== \'undefined\' ? CETAK_UKURAN_FONT_DEFAULT : ' + JSON.stringify(configCetakUkuranFont) + ');\nlet configCetakSpasi = localStorage.getItem(\'configCetakSpasi\') || (typeof CETAK_SPASI_DEFAULT !== \'undefined\' ? CETAK_SPASI_DEFAULT : ' + JSON.stringify(configCetakSpasi) + ');\nlet configCetakMarginAtas = localStorage.getItem(\'configCetakMarginAtas\') || (typeof CETAK_MARGIN_ATAS_DEFAULT !== \'undefined\' ? CETAK_MARGIN_ATAS_DEFAULT : ' + JSON.stringify(configCetakMarginAtas) + ');\nlet configCetakMarginBawah = localStorage.getItem(\'configCetakMarginBawah\') || (typeof CETAK_MARGIN_BAWAH_DEFAULT !== \'undefined\' ? CETAK_MARGIN_BAWAH_DEFAULT : ' + JSON.stringify(configCetakMarginBawah) + ');\nlet configCetakMarginKiri = localStorage.getItem(\'configCetakMarginKiri\') || (typeof CETAK_MARGIN_KIRI_DEFAULT !== \'undefined\' ? CETAK_MARGIN_KIRI_DEFAULT : ' + JSON.stringify(configCetakMarginKiri) + ');\nlet configCetakMarginKanan = localStorage.getItem(\'configCetakMarginKanan\') || (typeof CETAK_MARGIN_KANAN_DEFAULT !== \'undefined\' ? CETAK_MARGIN_KANAN_DEFAULT : ' + JSON.stringify(configCetakMarginKanan) + ');\nlet configCetakKunci = localStorage.getItem(\'configCetakKunci\') || (typeof CETAK_KUNCI_DEFAULT !== \'undefined\' ? CETAK_KUNCI_DEFAULT : ' + JSON.stringify(configCetakKunci) + ');\nlet configCetakAcak = localStorage.getItem(\'configCetakAcak\') || (typeof CETAK_ACAK_DEFAULT !== \'undefined\' ? CETAK_ACAK_DEFAULT : ' + JSON.stringify(configCetakAcak) + ');\n// __RUNTIME_CONFIG_END__';
-    html = html.replace(/\/\/ __CONFIG_START__[\s\S]*?\/\/ __CONFIG_END__/, () => newConfigBlock);
-    html = html.replace(/\/\/ __RUNTIME_CONFIG_START__[\s\S]*?\/\/ __RUNTIME_CONFIG_END__/, () => newRuntimeConfigBlock);
-    html = html.replace(/const HTML_VERSION = "[^"]*";/, 'const HTML_VERSION = "' + newVersion + '";');
-    const blob = new Blob([html], {type: 'text/html;charset=utf-8'}), url = URL.createObjectURL(blob), a = document.createElement('a');
-    a.href = url; a.download = 'ujian-pkk-dkv-v' + newVersion + '.html'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-    document.getElementById('statusSimpanPermanen').innerHTML = '<div class="alert-success">✅ <strong>File HTML berhasil didownload!</strong><br> Versi baru: <strong>v' + newVersion + '</strong><br>📌 Ganti file lama di hosting dengan file ini.</div>';
-  } catch (err) { document.getElementById('statusSimpanPermanen').innerHTML = '<div class="alert-error">❌ Error: ' + err.message + '</div>'; }
+    const newRuntimeLines = [
+      '// __RUNTIME_CONFIG_START__',
+      'let configDurasi = parseInt(localStorage.getItem("configDurasi") || (typeof DURASI_DEFAULT !== "undefined" ? DURASI_DEFAULT : ' + configDurasi + '));',
+      'let configJumlahSoal = parseInt(localStorage.getItem("configJumlahSoal") || (typeof JUMLAH_SOAL_DEFAULT !== "undefined" ? JUMLAH_SOAL_DEFAULT : ' + configJumlahSoal + '));',
+      'let configAcak = localStorage.getItem("configAcak") !== null ? localStorage.getItem("configAcak") === "true" : (typeof ACAK_DEFAULT !== "undefined" ? ACAK_DEFAULT : ' + configAcak + ');',
+      'let configAcakOpsi = localStorage.getItem("configAcakOpsi") !== null ? localStorage.getItem("configAcakOpsi") === "true" : (typeof ACAK_OPSI_DEFAULT !== "undefined" ? ACAK_OPSI_DEFAULT : ' + configAcakOpsi + ');',
+      'let configEnableReset = localStorage.getItem("configEnableReset") !== null ? localStorage.getItem("configEnableReset") === "true" : (typeof ENABLE_RESET_DEFAULT !== "undefined" ? ENABLE_RESET_DEFAULT : ' + configEnableReset + ');',
+      'let configAutoSaveHTML = localStorage.getItem("configAutoSaveHTML") !== null ? localStorage.getItem("configAutoSaveHTML") === "true" : (typeof AUTO_SAVE_HTML_DEFAULT !== "undefined" ? AUTO_SAVE_HTML_DEFAULT : ' + configAutoSaveHTML + ');',
+      'let configMaxPelanggaran = parseInt(localStorage.getItem("configMaxPelanggaran") || (typeof MAX_PELANGGARAN_DEFAULT !== "undefined" ? MAX_PELANGGARAN_DEFAULT : ' + configMaxPelanggaran + '));',
+      'let configNilaiMaksimal = parseInt(localStorage.getItem("configNilaiMaksimal") || (typeof NILAI_MAKSIMAL_DEFAULT !== "undefined" ? NILAI_MAKSIMAL_DEFAULT : ' + configNilaiMaksimal + '));',
+      'let configNilaiKKM = parseInt(localStorage.getItem("configNilaiKKM") || (typeof NILAI_KKM_DEFAULT !== "undefined" ? NILAI_KKM_DEFAULT : ' + configNilaiKKM + '));',
+      'let configTampilNilai = localStorage.getItem("configTampilNilai") !== null ? localStorage.getItem("configTampilNilai") !== "false" : (typeof TAMPIL_NILAI_DEFAULT !== "undefined" ? TAMPIL_NILAI_DEFAULT : ' + configTampilNilai + ');',
+      'let configGithubToken = localStorage.getItem("configGithubToken") || (typeof GITHUB_TOKEN_DEFAULT !== "undefined" ? GITHUB_TOKEN_DEFAULT : ' + JSON.stringify(configGithubToken) + ');',
+      'let configGithubOwner = localStorage.getItem("configGithubOwner") || (typeof GITHUB_OWNER_DEFAULT !== "undefined" ? GITHUB_OWNER_DEFAULT : ' + JSON.stringify(configGithubOwner) + ');',
+      'let configGithubRepo = localStorage.getItem("configGithubRepo") || (typeof GITHUB_REPO_DEFAULT !== "undefined" ? GITHUB_REPO_DEFAULT : ' + JSON.stringify(configGithubRepo) + ');',
+      'let configGithubPath = localStorage.getItem("configGithubPath") || (typeof GITHUB_PATH_DEFAULT !== "undefined" ? GITHUB_PATH_DEFAULT : ' + JSON.stringify(configGithubPath) + ');',
+      'let configGithubBranch = localStorage.getItem("configGithubBranch") || (typeof GITHUB_BRANCH_DEFAULT !== "undefined" ? GITHUB_BRANCH_DEFAULT : ' + JSON.stringify(configGithubBranch) + ');',
+      'let configAutoPushGithub = localStorage.getItem("configAutoPushGithub") !== null ? localStorage.getItem("configAutoPushGithub") === "true" : (typeof AUTO_PUSH_GITHUB_DEFAULT !== "undefined" ? AUTO_PUSH_GITHUB_DEFAULT : ' + configAutoPushGithub + ');',
+      '// __RUNTIME_CONFIG_END__'
+    ];
+    const newRuntimeConfigBlock = newRuntimeLines.join('\n');
+
+    htmlText = htmlText.replace(/\/\/ __CONFIG_START__[\s\S]*?\/\/ __CONFIG_END__/, () => newConfigBlock);
+    htmlText = htmlText.replace(/\/\/ __RUNTIME_CONFIG_START__[\s\S]*?\/\/ __RUNTIME_CONFIG_END__/, () => newRuntimeConfigBlock);
+    htmlText = htmlText.replace(/const HTML_VERSION = "[^"]*";/, 'const HTML_VERSION = "' + newVersion + '";');
+
+    const versionBadges = document.querySelectorAll('#versionBadge, #currentVersionDisplay');
+    versionBadges.forEach(el => el.innerText = 'v' + newVersion);
+
+    const blob = new Blob([htmlText], {type: 'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ujian-pkk-dkv-v' + newVersion + '.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    const statusElem = document.getElementById('statusSimpanPermanen');
+    if (statusElem) {
+      statusElem.innerHTML = '<div class="alert-success">✅ <strong>File HTML berhasil didownload!</strong><br> Versi baru: <strong>v' + newVersion + '</strong><br>📌 Ganti file lama di hosting dengan file ini.</div>';
+    }
+  } catch (err) {
+    const statusElem = document.getElementById('statusSimpanPermanen');
+    if (statusElem) {
+      statusElem.innerHTML = '<div class="alert-error">❌ Error: ' + err.message + '</div>';
+    }
+  }
 }
 
 function enterFullscreen() { const elem = document.documentElement; if (elem.requestFullscreen) elem.requestFullscreen().catch(()=>{}); else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen(); }
 function exitFullscreen() { if (document.exitFullscreen) document.exitFullscreen().catch(()=>{}); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); }
 document.addEventListener('fullscreenchange', handleFullscreenChange); document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 function handleFullscreenChange() { const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement); if (!isFullscreen && isFullscreenActive && statusUjian === 'berlangsung') { catatPelanggaran('Keluar dari mode fullscreen'); tampilkanOverlayPelanggaran('Anda keluar dari mode fullscreen!'); setTimeout(() => { if (statusUjian === 'berlangsung') enterFullscreen(); }, 3500); } }
+document.addEventListener('contextmenu', e => { if (statusUjian === 'berlangsung') { e.preventDefault(); } });
 document.addEventListener('copy', e => { if (statusUjian === 'berlangsung') { e.preventDefault(); catatPelanggaran('Percobaan copy teks'); } });
 document.addEventListener('cut', e => { if (statusUjian === 'berlangsung') { e.preventDefault(); catatPelanggaran('Percobaan cut teks'); } });
 document.addEventListener('paste', e => { if (statusUjian === 'berlangsung') { e.preventDefault(); } });
@@ -1566,10 +2054,24 @@ function mulaiTimer() {
 function kumpulkan() { const elapsed = Math.floor((Date.now() - waktuMulai) / 1000); if (elapsed < durasi) { alert('Anda belum dapat mengumpulkan sebelum waktu habis!\n\nSisa waktu: ' + Math.ceil((durasi - elapsed)/60) + ' menit lagi.'); return; } submitUjian(false); }
 function autoSubmit() { submitUjian(true); }
 
+let isSendingSheet = false;
+
 async function prosesAntreanSheet() {
+  if (isSendingSheet) return;
   const pendingDataStr = localStorage.getItem('pendingSheetPayload');
   if (!pendingDataStr || !configGoogleSheetUrl) return;
 
+  // Jika submission sudah tercatat terkirim, bersihkan antrean agar tidak terkirim dobel
+  if (localStorage.getItem('sheetSubmissionSent') === 'true') {
+    localStorage.removeItem('pendingSheetPayload');
+    const sheetStatusElem = document.getElementById('sheetSendingStatus');
+    if (sheetStatusElem) {
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Data ujian sudah terkirim ke Google Spreadsheet (hanya dikirim 1 kali).</div>';
+    }
+    return;
+  }
+
+  isSendingSheet = true;
   const sheetStatusElem = document.getElementById('sheetSendingStatus');
   if (sheetStatusElem) sheetStatusElem.innerHTML = '<div class="alert-info">⏳ Menghubungkan & mengirim nilai tertunda ke Google Spreadsheet...</div>';
 
@@ -1587,15 +2089,19 @@ async function prosesAntreanSheet() {
     });
     clearTimeout(timeoutId);
 
+    // Tandai permanen bahwa pengiriman sesi ini selesai & hapus antrean
     localStorage.removeItem('pendingSheetPayload');
+    localStorage.setItem('sheetSubmissionSent', 'true');
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai yang tertunda berhasil terkirim ke Google Spreadsheet!</div>';
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai yang tertunda berhasil terkirim ke Google Spreadsheet (1x).</div>';
     }
   } catch (err) {
     console.warn('Gagal memproses antrean pengiriman sheet:', err);
     if (sheetStatusElem) {
       sheetStatusElem.innerHTML = '<div class="alert-info">📡 Pengiriman tertunda (koneksi offline/tidak stabil). Nilai tersimpan di HP &amp; akan otomatis terkirim begitu terkoneksi Internet. <button onclick="prosesAntreanSheet()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Lagi</button></div>';
     }
+  } finally {
+    isSendingSheet = false;
   }
 }
 
@@ -1624,9 +2130,21 @@ async function kirimKeGoogleSheet(payload, customUrl) {
     }
   }
 
+  // Idempotensi: Jika nilai ujian sesi ini sudah pernah terkirim, JANGAN pernah kirim dobel!
+  if (localStorage.getItem('sheetSubmissionSent') === 'true') {
+    if (sheetStatusElem) {
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Data ujian sudah terkirim ke Google Spreadsheet (hanya dikirim 1 kali).</div>';
+    }
+    return true;
+  }
+
+  if (isSendingSheet) return false;
+  isSendingSheet = true;
+
   localStorage.setItem('pendingSheetPayload', jsonString);
 
   if (!navigator.onLine) {
+    isSendingSheet = false;
     if (sheetStatusElem) {
       sheetStatusElem.innerHTML = '<div class="alert-info">📡 HP dalam kondisi Offline. Nilai tersimpan aman di HP &amp; akan otomatis terkirim ke Google Spreadsheet saat HP terkoneksi Internet.</div>';
     }
@@ -1650,8 +2168,9 @@ async function kirimKeGoogleSheet(payload, customUrl) {
     });
     clearTimeout(timeoutId);
     localStorage.removeItem('pendingSheetPayload');
+    localStorage.setItem('sheetSubmissionSent', 'true');
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai berhasil terkirim ke Google Spreadsheet.</div>';
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai berhasil terkirim ke Google Spreadsheet (1x).</div>';
     }
     return true;
   } catch (err) {
@@ -1661,6 +2180,8 @@ async function kirimKeGoogleSheet(payload, customUrl) {
       sheetStatusElem.innerHTML = '<div class="alert-info">📡 Pengiriman tertunda (koneksi terputus). Nilai tersimpan di HP &amp; akan otomatis terkirim begitu terkoneksi Internet. <button onclick="prosesAntreanSheet()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Lagi</button></div>';
     }
     return false;
+  } finally {
+    isSendingSheet = false;
   }
 }
 
@@ -1670,6 +2191,13 @@ function submitUjian(isAutoSubmit) {
   const totalSoalCount = soalUrutan.length || 1;
   const nilai = Math.round((benar / totalSoalCount) * configNilaiMaksimal);
   const waktuSelesaiStr = new Date().toLocaleString('id-ID');
+
+  let currentSubId = localStorage.getItem('submissionId');
+  if (!currentSubId) {
+    currentSubId = 'SUB-' + Date.now() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    localStorage.setItem('submissionId', currentSubId);
+  }
+
   statusUjian = 'selesai'; localStorage.setItem('statusUjian', statusUjian); localStorage.setItem('nilai', nilai); localStorage.setItem('benar', benar);
   localStorage.setItem('autoSubmit', isAutoSubmit); localStorage.setItem('waktuSelesai', waktuSelesaiStr);
   isFullscreenActive = false; exitFullscreen(); hapusWatermark();
@@ -1678,6 +2206,7 @@ function submitUjian(isAutoSubmit) {
   if (configGoogleSheetUrl && dataSiswa) {
     const isLulus = nilai >= configNilaiKKM;
     const payload = {
+      submissionId: currentSubId,
       nama: dataSiswa.nama,
       nomor: dataSiswa.nomor,
       kelas: dataSiswa.kelas,
@@ -1715,28 +2244,41 @@ function tampilkanHasil(nilai, benar, isAutoSubmit) {
     scoreDisplayHtml = '<div class="alert-info" style="margin:20px 0; font-size:15px; font-weight:bold;">🔒 Nilai disembunyikan oleh Guru. Hasil ujian Anda telah tersimpan.</div>';
   }
 
-  const resetSiswaBtnHtml = '<button class="menu-btn menu-btn-warning" id="btnResetMenuAwal" onclick="resetSoalMenuAwal()" style="display:' + (configEnableReset ? 'inline-flex' : 'none') + '; margin:12px auto 15px auto;">🔄 Reset Ujian / Latihan</button>';
-
-  document.getElementById('resultArea').innerHTML = '<div class="' + resultClass + '"><h2>' + titleText + '</h2>' + resetSiswaBtnHtml + '<p><strong>Nama:</strong> ' + dataSiswa.nama + '</p><p><strong>Nomor:</strong> ' + dataSiswa.nomor + '</p><p><strong>Kelas:</strong> ' + dataSiswa.kelas + '</p><p style="font-size:12px; color:var(--text-secondary);">Selesai: ' + waktuSelesai + '</p>' + scoreDisplayHtml + '<p>Benar: <strong>' + benar + '</strong> / ' + soalUrutan.length + '</p><p style="margin-top:12px; font-size:16px;"><strong>⚠️ Pelanggaran: <span style="color:#dc2626; font-size:20px;">' + jumlahPelanggaran + '</span> / ' + maxPelanggaranUjian + '</strong></p>' + (isAutoSubmit ? '<p style="color:#991b1b; font-weight:bold; margin-top:8px;">Dikumpulkan otomatis (' + maxPelanggaranUjian + ' pelanggaran)</p>' : '') + '<div id="sheetSendingStatus"></div>' + violationListHtml + forensikHtml + '<div class="locked-box"> <strong>Ujian dikunci.</strong> Hubungi guru untuk reset.</div><button class="btn-reset" style="float:none; margin-top:15px; padding:10px 20px; font-size:14px;" onclick="bukaModalReset()">🔐 Reset (Guru)</button></div>';
+  document.getElementById('resultArea').innerHTML = '<div class="' + resultClass + '"><h2>' + titleText + '</h2><p><strong>Nama:</strong> ' + dataSiswa.nama + '</p><p><strong>Nomor:</strong> ' + dataSiswa.nomor + '</p><p><strong>Kelas:</strong> ' + dataSiswa.kelas + '</p><p style="font-size:12px; color:var(--text-secondary);">Selesai: ' + waktuSelesai + '</p>' + scoreDisplayHtml + '<p>Benar: <strong>' + benar + '</strong> / ' + soalUrutan.length + '</p><p style="margin-top:12px; font-size:16px;"><strong>⚠️ Pelanggaran: <span style="color:#dc2626; font-size:20px;">' + jumlahPelanggaran + '</span> / ' + maxPelanggaranUjian + '</strong></p>' + (isAutoSubmit ? '<p style="color:#991b1b; font-weight:bold; margin-top:8px;">Dikumpulkan otomatis (' + maxPelanggaranUjian + ' pelanggaran)</p>' : '') + '<div id="sheetSendingStatus"></div>' + violationListHtml + forensikHtml + '<div class="locked-box"> <strong>Ujian dikunci.</strong> Hubungi guru untuk reset.</div><button class="btn-reset" style="float:none; margin-top:15px; padding:10px 20px; font-size:14px;" onclick="bukaModalReset()">🔐 Reset (Guru)</button></div>';
 }
 
 function tutupModal(id) { document.getElementById(id).style.display = 'none'; }
 function bukaModalReset() { document.getElementById('resetModal').style.display = 'flex'; document.getElementById('passwordGuru').value = ''; }
 function konfirmasiReset() {
   const pwd = document.getElementById('passwordGuru').value;
-  if (pwd === PASSWORD_GURU) { if (confirm('Yakin ingin mereset ujian siswa ini?')) { ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k)); isFullscreenActive = false; exitFullscreen(); hapusWatermark(); alert('Ujian berhasil direset!'); location.reload(); } } else { alert('Password salah!'); }
+  if (pwd === PASSWORD_GURU) { if (confirm('Yakin ingin mereset ujian siswa ini?')) { ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSubmissionSent'].forEach(k => localStorage.removeItem(k)); isFullscreenActive = false; exitFullscreen(); hapusWatermark(); alert('Ujian berhasil direset!'); location.reload(); } } else { alert('Password salah!'); }
 }
 
 window.addEventListener('online', () => {
-  console.log('Koneksi terdeteksi (online). Memproses antrean pengiriman nilai...');
+  console.log('Koneksi terdeteksi (online). Memproses antrean sinkronisasi data...');
   prosesAntreanSheet();
+  if (configAutoPushGithub && localStorage.getItem('pendingGithubSync') === 'true') {
+    prosesAntreanGithub();
+  } else {
+    perbaruiIndikatorStatusOffline();
+  }
+});
+
+window.addEventListener('offline', () => {
+  console.log('Perangkat terdeteksi offline.');
+  perbaruiIndikatorStatusOffline();
 });
 
 setInterval(() => {
-  if (localStorage.getItem('pendingSheetPayload') && navigator.onLine) {
-    prosesAntreanSheet();
+  if (navigator.onLine) {
+    if (localStorage.getItem('pendingSheetPayload')) {
+      prosesAntreanSheet();
+    }
+    if (configAutoPushGithub && localStorage.getItem('pendingGithubSync') === 'true') {
+      prosesAntreanGithub();
+    }
   }
-}, 10000);
+}, 5000);
 
 window.onload = function() {
   if (localStorage.getItem('darkMode') === 'true') { document.body.classList.add('dark-mode'); document.querySelector('.dark-mode-toggle').innerText = '☀️'; }
@@ -1770,12 +2312,20 @@ window.onload = function() {
       prosesAntreanSheet();
     }
   }
+  if (configAutoPushGithub && localStorage.getItem('pendingGithubSync') === 'true') {
+    if (navigator.onLine) {
+      prosesAntreanGithub();
+    } else {
+      perbaruiIndikatorStatusOffline();
+    }
+  }
 };
 
 window.addEventListener('resize', () => { if (statusUjian === 'berlangsung' && dataSiswa) buatWatermark(dataSiswa.nama, dataSiswa.nomor, dataSiswa.kelas); });
 </script>
 
   
+
 
 
 </body></html>
