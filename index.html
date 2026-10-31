@@ -295,16 +295,25 @@
   <h1 id="judulUtama">PAI</h1>
   <p class="subtitle" id="subJudul">MATERI BAB 1</p>
 
+  <!-- Status Koneksi Global (Offline / Online Auto-Sync) -->
+  <div id="globalNetworkBanner" class="sync-banner sync-banner-success" style="display:none; margin-bottom:15px;">
+    <span id="globalNetworkStatusText"></span>
+  </div>
+
   <div id="menuAwal" class="menu-awal" style="display: block;">
     <h2 id="menuAwalTitle">Selamat Datang</h2>
     <p id="menuAwalSubtitle">Silakan pilih peran Anda untuk melanjutkan</p>
     <div class="menu-buttons">
       <button class="menu-btn menu-btn-siswa" onclick="bukaFormSiswa()">📝 Mulai Ujian (Siswa)</button>
       <button class="menu-btn menu-btn-guru" onclick="bukaLoginGuru()">🔑 Login Guru (Kelola Ujian)</button>
+      <button class="menu-btn menu-btn-warning" id="btnResetMenuAwal" onclick="resetSoalMenuAwal()" style="display:none;">🔄 Reset Latihan (Siswa)</button>
     </div>
   </div>
 
   <div id="identityForm" style="display:none;" class="fade-in">
+    <div id="identityNetworkNotice" class="sync-banner sync-banner-offline" style="display:none;">
+      <span>📡 <strong>MODE OFFLINE:</strong> Anda tetap bisa mulai &amp; mengerjakan ujian. Data pengerjaan akan tersimpan otomatis di perangkat dan terkirim ke spreadsheet saat online.</span>
+    </div>
     <div class="info-box" id="infoWaktu">⏰ Waktu: <strong>40 menit</strong> | Soal: <strong>Semua</strong></div>
     <div class="warning-box">🚨 <strong>PERINGATAN:</strong> Ujian berjalan dalam mode FULLSCREEN. Dilarang screenshot, pindah tab, atau keluar layar. <strong><span id="maxPelanggaranInfo">6</span> pelanggaran = auto-submit.</strong><br>📸 Layar akan ditandai dengan <strong>watermark nama Anda</strong> sebagai bukti digital.</div>
     <div class="form-group"><label>Nama Lengkap:</label><input type="text" id="nama" placeholder="Masukkan nama lengkap"></div>
@@ -575,9 +584,19 @@
         sheetGuru = ss.insertSheet("Pengaturan_Guru");
       }
       if (sheetGuru.getLastRow() == 0) {
-        sheetGuru.appendRow(["Waktu Sync", "Judul Ujian", "Subjudul", "Token", "Durasi (Menit)", "Jumlah Soal", "Acak Soal", "Acak Opsi", "Batas Pelanggaran", "Nilai Max", "KKM", "Total Bank Soal", "Data Lengkap (JSON)"]);
+        sheetGuru.appendRow(["ID Sync", "Waktu Sync", "Judul Ujian", "Subjudul", "Token", "Durasi (Menit)", "Jumlah Soal", "Acak Soal", "Acak Opsi", "Batas Pelanggaran", "Nilai Max", "KKM", "Total Bank Soal", "Data Lengkap (JSON)"]);
+      }
+      var syncId = String(data.submissionId || data.timestamp || "");
+      if (syncId && sheetGuru.getLastRow() > 1) {
+        var existingSyncIds = sheetGuru.getRange(2, 1, sheetGuru.getLastRow() - 1, 1).getValues();
+        for (var s = 0; s < existingSyncIds.length; s++) {
+          if (String(existingSyncIds[s][0]) === syncId) {
+            return ContentService.createTextOutput(JSON.stringify({result: "already_exists", type: "dashboard_sync"})).setMimeType(ContentService.MimeType.JSON);
+          }
+        }
       }
       sheetGuru.appendRow([
+        syncId,
         data.waktuSync || new Date().toLocaleString(),
         data.judul || "",
         data.subJudul || "",
@@ -596,12 +615,25 @@
       return ContentService.createTextOutput(JSON.stringify({result: "success", type: "dashboard_sync"})).setMimeType(ContentService.MimeType.JSON);
     }
 
-    // 2. Pengiriman nilai ujian siswa
+    // 2. Pengiriman nilai ujian siswa (DENGAN PROTEKSI ANTI-DUPLIKAT)
     var sheetSiswa = ss.getSheetByName("Hasil_Ujian") || ss.getActiveSheet();
     if (sheetSiswa.getLastRow() == 0) {
-      sheetSiswa.appendRow(["Timestamp", "Nama", "Nomor Absen", "Kelas", "Nilai", "Benar", "Total Soal", "Pelanggaran", "Auto Submit", "Waktu Selesai"]);
+      sheetSiswa.appendRow(["ID Pengiriman", "Timestamp", "Nama", "Nomor Absen", "Kelas", "Nilai", "Benar", "Total Soal", "Pelanggaran", "Auto Submit", "Waktu Selesai"]);
     }
+
+    // Periksa apakah ID Pengiriman sudah ada untuk mencegah data dobel
+    var subId = String(data.submissionId || "");
+    if (subId && sheetSiswa.getLastRow() > 1) {
+      var existingIds = sheetSiswa.getRange(2, 1, sheetSiswa.getLastRow() - 1, 1).getValues();
+      for (var i = 0; i < existingIds.length; i++) {
+        if (String(existingIds[i][0]) === subId) {
+          return ContentService.createTextOutput(JSON.stringify({result: "already_exists", type: "hasil_ujian"})).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+    }
+
     sheetSiswa.appendRow([
+      subId,
       data.waktuSelesai || new Date(),
       data.nama || "",
       data.nomor || "",
@@ -673,6 +705,9 @@
   </div>
 
   <div id="quizArea" style="display:none;" class="fade-in">
+    <div id="quizNetworkNotice" class="sync-banner sync-banner-offline" style="display:none; margin-bottom:10px;">
+      <span>📡 <strong>MODE OFFLINE:</strong> Jawaban Anda tersimpan otomatis di perangkat. Jawaban &amp; nilai akan dikirim ke spreadsheet setelah tersambung ke Internet.</span>
+    </div>
     <div class="clearfix"><button class="btn-reset" onclick="bukaModalReset()"> Reset (Guru)</button></div>
     <div class="timer" id="timer">Waktu Tersisa: 30:00</div>
     <div class="progress-container"><div class="progress-bar" id="progressBar" style="width: 0%"></div></div>
@@ -793,6 +828,44 @@ let jumlahPelanggaran = parseInt(localStorage.getItem('jumlahPelanggaran') || '0
 let maxPelanggaranUjian = configMaxPelanggaran, isFullscreenActive = false, soalUrutan = [];
 let urutanOpsiPerSoal = JSON.parse(localStorage.getItem('urutanOpsiPerSoal') || '{}');
 let waktuJawaban = JSON.parse(localStorage.getItem('waktuJawaban') || '{}');
+let isSheetSyncing = false;
+let isDashboardSyncing = false;
+
+function buatSubmissionId() {
+  return 'SUB-' + Date.now() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+function updateGlobalNetworkStatusUI() {
+  const isOnline = navigator.onLine;
+  const globalBanner = document.getElementById('globalNetworkBanner');
+  const globalText = document.getElementById('globalNetworkStatusText');
+  const identityNotice = document.getElementById('identityNetworkNotice');
+  const quizNotice = document.getElementById('quizNetworkNotice');
+  const pendingSheet = localStorage.getItem('pendingSheetPayload');
+  const sheetSent = localStorage.getItem('sheetSent') === 'true';
+
+  if (globalBanner && globalText) {
+    if (!isOnline) {
+      globalBanner.className = 'sync-banner sync-banner-offline';
+      globalBanner.style.display = 'flex';
+      globalText.innerHTML = '<span class="sync-pulse sync-pulse-red"></span><span>📡 <strong>MODE OFFLINE:</strong> Ujian dan perubahan data tetap tersimpan aman di perangkat. Data otomatis tersinkron ke spreadsheet saat terhubung kembali ke Internet.</span>';
+    } else if (pendingSheet && !sheetSent) {
+      globalBanner.className = 'sync-banner sync-banner-warning';
+      globalBanner.style.display = 'flex';
+      globalText.innerHTML = '<span class="sync-pulse sync-pulse-yellow"></span><span>⚠️ <strong>ONLINE:</strong> Menyinkronkan data tersimpan ke Google Spreadsheet...</span>';
+    } else {
+      globalBanner.style.display = 'none';
+    }
+  }
+
+  if (identityNotice) {
+    identityNotice.style.display = !isOnline ? 'flex' : 'none';
+  }
+  if (quizNotice) {
+    quizNotice.style.display = !isOnline ? 'flex' : 'none';
+  }
+  updateDashboardSyncBannerUI();
+}
 
 function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
@@ -863,6 +936,7 @@ let isDashboardAutoSaveInitialized = false;
 function kumpulkanSemuaDataDashboard() {
   return {
     type: 'dashboard_sync',
+    submissionId: 'CONFIG-' + Date.now(),
     waktuSync: new Date().toLocaleString('id-ID'),
     timestamp: Date.now(),
     judul: configJudul,
@@ -1273,11 +1347,16 @@ function simpanEnableReset() { configEnableReset = document.getElementById('togg
 function updateStatusAcak() { const status = document.getElementById('statusAcak'); if (configAcak) { status.innerText = 'AKTIF'; status.className = 'status-badge status-on'; } else { status.innerText = 'NONAKTIF'; status.className = 'status-badge status-off'; } }
 function updateStatusAcakOpsi() { const status = document.getElementById('statusAcakOpsi'); if (configAcakOpsi) { status.innerText = 'AKTIF'; status.className = 'status-badge status-on'; } else { status.innerText = 'NONAKTIF'; status.className = 'status-badge status-off'; } }
 function updateStatusEnableReset() { const status = document.getElementById('statusEnableReset'); if (!status) return; if (configEnableReset) { status.innerText = 'AKTIF (Latihan)'; status.className = 'status-badge status-on'; } else { status.innerText = 'NONAKTIF (Mode UJIAN)'; status.className = 'status-badge status-off'; } }
-function updateResetButtonVisibility() { const btn = document.getElementById('btnResetMenuAwal'); if (!btn) return; btn.style.display = configEnableReset ? 'inline-flex' : 'none'; }
+function updateResetButtonVisibility() {
+  const btnMenu = document.getElementById('btnResetMenuAwal');
+  if (btnMenu) btnMenu.style.display = configEnableReset ? 'inline-flex' : 'none';
+  const btnResult = document.getElementById('btnResetResult');
+  if (btnResult) btnResult.style.display = configEnableReset ? 'inline-flex' : 'none';
+}
 function resetSoalMenuAwal() {
   if (configEnableReset) {
     if (confirm('Yakin ingin mereset/mengulang latihan soal? Semua data pengerjaan sebelumnya akan dibersihkan.')) {
-      ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k));
+      ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSent'].forEach(k => localStorage.removeItem(k));
       statusUjian = null; dataSiswa = null; jawaban = {}; pelanggaran = []; jumlahPelanggaran = 0;
       alert('✅ Latihan soal berhasil direset! Silakan mulai ujian/latihan kembali.');
       location.reload();
@@ -1497,14 +1576,14 @@ function exportToExcel() {
 
 function resetDataSiswa() {
   if (!confirm('Yakin ingin menghapus semua data siswa?')) return;
-  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k));
+  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSent'].forEach(k => localStorage.removeItem(k));
   document.getElementById('statusResetSiswa').innerHTML = '<div class="alert-success">✅ Semua data siswa berhasil dihapus</div>';
   setTimeout(() => { document.getElementById('statusResetSiswa').innerHTML = ''; }, 3000);
 }
 
 function hapusDataTerEmbed() {
   if (!confirm('Yakin ingin menghapus semua data ter-embed dan data siswa? Semua bekas data ujian akan dibersihkan.')) return;
-  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k));
+  ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSent'].forEach(k => localStorage.removeItem(k));
   statusUjian = null; dataSiswa = null; jawaban = {}; pelanggaran = []; jumlahPelanggaran = 0; soalUrutan = []; urutanOpsiPerSoal = {}; waktuJawaban = {};
   ['nama','nomor','kelas','tokenUjian'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   ['soalContainer','resultArea','watermarkOverlay'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
@@ -1879,6 +1958,8 @@ async function syncDashboardGuru(payload) {
     return false;
   }
 
+  if (isDashboardSyncing) return false;
+  isDashboardSyncing = true;
   updateDashboardSyncBannerUI('syncing');
 
   const controller = new AbortController();
@@ -1898,11 +1979,13 @@ async function syncDashboardGuru(payload) {
     const syncTimeStr = new Date().toLocaleTimeString('id-ID');
     localStorage.setItem('lastDashboardSyncTime', syncTimeStr);
     updateDashboardSyncBannerUI('success', syncTimeStr);
+    isDashboardSyncing = false;
     return true;
   } catch (err) {
     clearTimeout(timeoutId);
     console.warn('Gagal sinkronisasi dashboard guru:', err);
     updateDashboardSyncBannerUI(navigator.onLine ? 'pending' : 'offline');
+    isDashboardSyncing = false;
     return false;
   }
 }
@@ -1917,7 +2000,7 @@ async function prosesAntreanDashboardSync() {
     updateDashboardSyncBannerUI('offline');
     return;
   }
-  if (!configGoogleSheetUrl) return;
+  if (!configGoogleSheetUrl || isDashboardSyncing) return;
 
   try {
     const payload = JSON.parse(pending);
@@ -1952,15 +2035,33 @@ function syncDashboardGuruManual() {
 
 async function prosesAntreanSheet() {
   const pendingDataStr = localStorage.getItem('pendingSheetPayload');
-  if (!pendingDataStr || !configGoogleSheetUrl) return;
+  const sheetSent = localStorage.getItem('sheetSent') === 'true';
+
+  if (sheetSent) {
+    localStorage.removeItem('pendingSheetPayload');
+    const sheetStatusElem = document.getElementById('sheetSendingStatus');
+    if (sheetStatusElem) {
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai telah terkirim ke Google Spreadsheet (Anti-Duplikasi Aktif).</div>';
+    }
+    updateGlobalNetworkStatusUI();
+    return;
+  }
+
+  if (!pendingDataStr || !configGoogleSheetUrl) {
+    updateGlobalNetworkStatusUI();
+    return;
+  }
+
+  if (isSheetSyncing) return;
+  isSheetSyncing = true;
 
   const sheetStatusElem = document.getElementById('sheetSendingStatus');
-  if (sheetStatusElem) sheetStatusElem.innerHTML = '<div class="alert-info">⏳ Menghubungkan & mengirim nilai tertunda ke Google Spreadsheet...</div>';
+  if (sheetStatusElem) sheetStatusElem.innerHTML = '<div class="alert-info">⏳ Menghubungkan & mengirim nilai tersimpan ke Google Spreadsheet...</div>';
 
   try {
     const payload = JSON.parse(pendingDataStr);
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const timeoutId = setTimeout(() => controller.abort(), 9000);
 
     await fetch(configGoogleSheetUrl, {
       method: 'POST',
@@ -1972,23 +2073,29 @@ async function prosesAntreanSheet() {
     clearTimeout(timeoutId);
 
     localStorage.removeItem('pendingSheetPayload');
+    localStorage.setItem('sheetSent', 'true');
+    isSheetSyncing = false;
+
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai yang tertunda berhasil terkirim ke Google Spreadsheet!</div>';
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai berhasil terkirim ke Google Spreadsheet!</div>';
     }
+    updateGlobalNetworkStatusUI();
   } catch (err) {
+    isSheetSyncing = false;
     console.warn('Gagal memproses antrean pengiriman sheet:', err);
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-info">📡 Pengiriman tertunda (koneksi offline/tidak stabil). Nilai tersimpan di HP &amp; akan otomatis terkirim begitu terkoneksi Internet. <button onclick="prosesAntreanSheet()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Lagi</button></div>';
+      sheetStatusElem.innerHTML = '<div class="alert-info">📡 Pengiriman tertunda (menunggu internet aktif). Nilai tersimpan aman di perangkat &amp; otomatis dikirim sekali saat online. <button onclick="prosesAntreanSheet()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Sekarang</button></div>';
     }
+    updateGlobalNetworkStatusUI();
   }
 }
 
 async function kirimKeGoogleSheet(payload, customUrl) {
   const targetUrl = customUrl || configGoogleSheetUrl;
   if (!targetUrl) return false;
-  const jsonString = JSON.stringify(payload);
   const sheetStatusElem = document.getElementById('sheetSendingStatus');
 
+  // Jika ini adalah test kirim dari dashboard
   if (customUrl) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
@@ -1997,7 +2104,7 @@ async function kirimKeGoogleSheet(payload, customUrl) {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-        body: jsonString,
+        body: JSON.stringify(payload),
         signal: controller.signal
       });
       clearTimeout(timeoutId);
@@ -2008,21 +2115,42 @@ async function kirimKeGoogleSheet(payload, customUrl) {
     }
   }
 
+  // Jika sudah pernah terkirim sebelumnya, jangan kirim ulang (anti double submit)
+  if (localStorage.getItem('sheetSent') === 'true') {
+    if (sheetStatusElem) {
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai telah terkirim ke Google Spreadsheet (tidak ada data dobel).</div>';
+    }
+    return true;
+  }
+
+  // Pastikan payload memiliki submissionId unik permanen
+  let submissionId = localStorage.getItem('submissionId');
+  if (!submissionId) {
+    submissionId = buatSubmissionId();
+    localStorage.setItem('submissionId', submissionId);
+  }
+  payload.submissionId = submissionId;
+
+  const jsonString = JSON.stringify(payload);
   localStorage.setItem('pendingSheetPayload', jsonString);
+  updateGlobalNetworkStatusUI();
 
   if (!navigator.onLine) {
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-info">📡 HP dalam kondisi Offline. Nilai tersimpan aman di HP &amp; akan otomatis terkirim ke Google Spreadsheet saat HP terkoneksi Internet.</div>';
+      sheetStatusElem.innerHTML = '<div class="alert-info">📡 <strong>Perangkat Sedang Offline:</strong> Nilai tersimpan aman di perangkat ini. Sistem akan otomatis mengirimkannya ke Google Spreadsheet sekali saat terhubung ke Internet.</div>';
     }
     return false;
   }
+
+  if (isSheetSyncing) return false;
+  isSheetSyncing = true;
 
   if (sheetStatusElem) {
     sheetStatusElem.innerHTML = '<div class="alert-info">⏳ Mengirim hasil nilai ke Google Spreadsheet...</div>';
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 8000);
+  const timeoutId = setTimeout(() => controller.abort(), 9000);
 
   try {
     await fetch(targetUrl, {
@@ -2034,16 +2162,21 @@ async function kirimKeGoogleSheet(payload, customUrl) {
     });
     clearTimeout(timeoutId);
     localStorage.removeItem('pendingSheetPayload');
+    localStorage.setItem('sheetSent', 'true');
+    isSheetSyncing = false;
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai berhasil terkirim ke Google Spreadsheet.</div>';
+      sheetStatusElem.innerHTML = '<div class="alert-success">✅ Hasil nilai berhasil terkirim ke Google Spreadsheet (1x terkirim, tidak ada duplikasi).</div>';
     }
+    updateGlobalNetworkStatusUI();
     return true;
   } catch (err) {
     clearTimeout(timeoutId);
+    isSheetSyncing = false;
     console.error('Gagal mengirim ke Google Sheet:', err);
     if (sheetStatusElem) {
-      sheetStatusElem.innerHTML = '<div class="alert-info">📡 Pengiriman tertunda (koneksi terputus). Nilai tersimpan di HP &amp; akan otomatis terkirim begitu terkoneksi Internet. <button onclick="prosesAntreanSheet()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Lagi</button></div>';
+      sheetStatusElem.innerHTML = '<div class="alert-info">📡 Pengiriman tertunda (koneksi terputus). Nilai tersimpan aman &amp; otomatis terkirim begitu terkoneksi Internet. <button onclick="prosesAntreanSheet()" class="btn btn-warning" style="padding:2px 8px; font-size:11px; margin-left:5px;">🔄 Coba Lagi</button></div>';
     }
+    updateGlobalNetworkStatusUI();
     return false;
   }
 }
@@ -2056,12 +2189,21 @@ function submitUjian(isAutoSubmit) {
   const waktuSelesaiStr = new Date().toLocaleString('id-ID');
   statusUjian = 'selesai'; localStorage.setItem('statusUjian', statusUjian); localStorage.setItem('nilai', nilai); localStorage.setItem('benar', benar);
   localStorage.setItem('autoSubmit', isAutoSubmit); localStorage.setItem('waktuSelesai', waktuSelesaiStr);
+
+  // Buat dan simpan submissionId unik untuk sesi ujian ini
+  let currentSubId = localStorage.getItem('submissionId');
+  if (!currentSubId) {
+    currentSubId = buatSubmissionId();
+    localStorage.setItem('submissionId', currentSubId);
+  }
+
   isFullscreenActive = false; exitFullscreen(); hapusWatermark();
   tampilkanHasil(nilai, benar, isAutoSubmit);
 
   if (configGoogleSheetUrl && dataSiswa) {
     const isLulus = nilai >= configNilaiKKM;
     const payload = {
+      submissionId: currentSubId,
       nama: dataSiswa.nama,
       nomor: dataSiswa.nomor,
       kelas: dataSiswa.kelas,
@@ -2099,7 +2241,7 @@ function tampilkanHasil(nilai, benar, isAutoSubmit) {
     scoreDisplayHtml = '<div class="alert-info" style="margin:20px 0; font-size:15px; font-weight:bold;">🔒 Nilai disembunyikan oleh Guru. Hasil ujian Anda telah tersimpan.</div>';
   }
 
-  const resetSiswaBtnHtml = '<button class="menu-btn menu-btn-warning" id="btnResetMenuAwal" onclick="resetSoalMenuAwal()" style="display:' + (configEnableReset ? 'inline-flex' : 'none') + '; margin:12px auto 15px auto;">🔄 Reset Ujian / Latihan</button>';
+  const resetSiswaBtnHtml = '<button class="menu-btn menu-btn-warning" id="btnResetResult" onclick="resetSoalMenuAwal()" style="display:' + (configEnableReset ? 'inline-flex' : 'none') + '; margin:12px auto 15px auto;">🔄 Reset Ujian / Latihan</button>';
 
   document.getElementById('resultArea').innerHTML = '<div class="' + resultClass + '"><h2>' + titleText + '</h2>' + resetSiswaBtnHtml + '<p><strong>Nama:</strong> ' + dataSiswa.nama + '</p><p><strong>Nomor:</strong> ' + dataSiswa.nomor + '</p><p><strong>Kelas:</strong> ' + dataSiswa.kelas + '</p><p style="font-size:12px; color:var(--text-secondary);">Selesai: ' + waktuSelesai + '</p>' + scoreDisplayHtml + '<p>Benar: <strong>' + benar + '</strong> / ' + soalUrutan.length + '</p><p style="margin-top:12px; font-size:16px;"><strong>⚠️ Pelanggaran: <span style="color:#dc2626; font-size:20px;">' + jumlahPelanggaran + '</span> / ' + maxPelanggaranUjian + '</strong></p>' + (isAutoSubmit ? '<p style="color:#991b1b; font-weight:bold; margin-top:8px;">Dikumpulkan otomatis (' + maxPelanggaranUjian + ' pelanggaran)</p>' : '') + '<div id="sheetSendingStatus"></div>' + violationListHtml + forensikHtml + '<div class="locked-box"> <strong>Ujian dikunci.</strong> Hubungi guru untuk reset.</div><button class="btn-reset" style="float:none; margin-top:15px; padding:10px 20px; font-size:14px;" onclick="bukaModalReset()">🔐 Reset (Guru)</button></div>';
 }
@@ -2108,19 +2250,19 @@ function tutupModal(id) { document.getElementById(id).style.display = 'none'; }
 function bukaModalReset() { document.getElementById('resetModal').style.display = 'flex'; document.getElementById('passwordGuru').value = ''; }
 function konfirmasiReset() {
   const pwd = document.getElementById('passwordGuru').value;
-  if (pwd === PASSWORD_GURU) { if (confirm('Yakin ingin mereset ujian siswa ini?')) { ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload'].forEach(k => localStorage.removeItem(k)); isFullscreenActive = false; exitFullscreen(); hapusWatermark(); alert('Ujian berhasil direset!'); location.reload(); } } else { alert('Password salah!'); }
+  if (pwd === PASSWORD_GURU) { if (confirm('Yakin ingin mereset ujian siswa ini?')) { ['statusUjian','waktuMulai','jawaban','dataSiswa','pelanggaran','jumlahPelanggaran','nilai','benar','autoSubmit','waktuSelesai','soalUrutan','urutanOpsiPerSoal','waktuJawaban','pendingSheetPayload','submissionId','sheetSent'].forEach(k => localStorage.removeItem(k)); isFullscreenActive = false; exitFullscreen(); hapusWatermark(); alert('Ujian berhasil direset!'); location.reload(); } } else { alert('Password salah!'); }
 }
 
 window.addEventListener('online', () => {
   console.log('Koneksi terdeteksi (online). Memproses antrean...');
+  updateGlobalNetworkStatusUI();
   prosesAntreanSheet();
   prosesAntreanDashboardSync();
-  updateDashboardSyncBannerUI();
 });
 
 window.addEventListener('offline', () => {
   console.log('Koneksi terputus (offline).');
-  updateDashboardSyncBannerUI('offline');
+  updateGlobalNetworkStatusUI();
 });
 
 setInterval(() => {
@@ -2138,6 +2280,7 @@ window.onload = function() {
   if (localStorage.getItem('darkMode') === 'true') { document.body.classList.add('dark-mode'); document.querySelector('.dark-mode-toggle').innerText = '☀️'; }
   updateJudulDiSemuaTempat();
   updateResetButtonVisibility();
+  updateGlobalNetworkStatusUI();
   if (statusUjian === 'berlangsung') {
     waktuMulai = parseInt(localStorage.getItem('waktuMulai')); jumlahPelanggaran = parseInt(localStorage.getItem('jumlahPelanggaran') || '0');
     pelanggaran = JSON.parse(localStorage.getItem('pelanggaran') || '[]'); jawaban = JSON.parse(localStorage.getItem('jawaban') || '{}');
